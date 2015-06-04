@@ -1,3 +1,4 @@
+import sys
 import pysam
 import string
 import re
@@ -248,7 +249,7 @@ def createCigSeries(csd):
 # MAIN METHOD ##################################################################
 # ##############################################################################
 if __name__ == "__main__":
-	samfile = pysam.AlignmentFile("testSAM.sam", "r")
+	samfile = pysam.AlignmentFile(sys.argv[1], "r")
 	md_dict, cig_dict = createDicts(samfile)
 	pm_array = createPMarray(cig_dict, md_dict)
 	graphPM(pm_array)
