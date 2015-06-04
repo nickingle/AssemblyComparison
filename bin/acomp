@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+KMER = 21
+MINREAD = 3
+PROCESSORS = 1
+FORMAT = fasta
+SKIP = 0
+REPEAT = 0
+MAINFOLDER = .
+
+DIRS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"    #where is the main file?
+DIR=$( dirname ${DIRS} )                                    #go one level up from location of main file
+MAINFOLDER=$( echo "${MAINFOLDER}" | sed -e "s/\/*$//" )    #remove trailing / if necessary
+
+REFFILES=( $( find "${MAINFOLDER}" -name "${FORMAT}" ) )     #all FORMAT file paths as array
+declare -a ALLFOLDERLIST=()
+for F in "${REFFILES[@]}"; do ALLFOLDERLIST+=("$( dirname "${F}" )"); done       #array of directories containing FORMAT files
+FOLDERLIST=( $(echo "${ALLFOLDERLIST[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' ') )  #sorted unique list of folders with paired FORMAT files as array
+
+# Simulate Sequences using art_illumina
+for FILE in "${REFLIST[@]}"; do
+        NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' ) #includes folder but not the read or the extension
+        echo ==== Simulating Sequences of ${NAME} ====
+		art_illumina -i ${FILE} -p  -l 50 -f 20 -m 200 -s 10 -o ${MAINFOLDER}/${NAME}_sim_seqs #Run art_illumina on reference file    done
+    echo ==== Done Simulating Reads ====
+
+# Build seqences using velvet
+for FILE in "${REFLIST[@]}"; do
+		NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
+		echo ==== Running Velvet on Simulated Seqs of ${NAME} ====
+		velveth ${MAINFOLDER}/velvetoutput ${KMER} -create_binary -${FORMAT} -shortPaired ${MAINFOLDER}/${NAME}_sim_seqs.fa
+		velvetg ${MAINFOLDER}/velvetoutput -exp_cov auto -cov_cutoff auto
+	echo ==== Finished Velvet Assembly ===
+
+for FILE in "${REFLIST[@]}"; do
+		NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
+		echo === Running Minia on Simulated Seqs of ${NAME} ===
+		minia -in ${MAINFOLDER}/${NAME}_sim_seqs.fa -kmer-size ${KMER} -abundance-min {$MINREAD} -out ${MAINFOLDER}/${NAME}_Minia_ouput.fa
+	echo === Finished Minia Assembly ===
+
+
+
+
+# art_illumina -p -sam -i seq_reference.fa -l 50 -f 20 -m 200 -s 10 -o d./outdir/dat_paired_end
