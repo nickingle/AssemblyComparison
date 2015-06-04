@@ -8,8 +8,8 @@ SKIP = 0
 REPEAT = 0
 MAINFOLDER = .
 
-DIRS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"    #where is the main file?
-DIR=$( dirname ${DIRS} )                                    #go one level up from location of main file
+DIRS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"    #where is the acomp file?
+DIR=$( dirname ${DIRS} )                                    #go one level up from location of acompfile
 MAINFOLDER=$( echo "${MAINFOLDER}" | sed -e "s/\/*$//" )    #remove trailing / if necessary
 
 REFFILES=( $( find "${MAINFOLDER}" -name "${FORMAT}" ) )     #all FORMAT file paths as array
@@ -28,17 +28,31 @@ for FILE in "${REFLIST[@]}"; do
 for FILE in "${REFLIST[@]}"; do
 		NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
 		echo ==== Running Velvet on Simulated Seqs of ${NAME} ====
-		velveth ${MAINFOLDER}/velvetoutput ${KMER} -create_binary -${FORMAT} -shortPaired ${MAINFOLDER}/${NAME}_sim_seqs.fa
+		velveth ${MAINFOLDER}/velvetoutput ${KMER} -create_binary -fasta -shortPaired ${MAINFOLDER}/${NAME}_sim_seqs.fa
 		velvetg ${MAINFOLDER}/velvetoutput -exp_cov auto -cov_cutoff auto
 	echo ==== Finished Velvet Assembly ===
 
 for FILE in "${REFLIST[@]}"; do
 		NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
 		echo === Running Minia on Simulated Seqs of ${NAME} ===
-		minia -in ${MAINFOLDER}/${NAME}_sim_seqs.fa -kmer-size ${KMER} -abundance-min {$MINREAD} -out ${MAINFOLDER}/${NAME}_Minia_ouput.fa
+		minia -in ${MAINFOLDER}/${NAME}_sim_seqs.fa -kmer-size ${KMER} -abundance-min {$MINREAD} -out ${MAINFOLDER}/${NAME}_minia_ouput.fa
 	echo === Finished Minia Assembly ===
+	
+for FILE in "${REFLIST[@]}"; do
+			NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
+			echo === Aligning Velvet and Minia Contigs ====
+			bowtie2-build ${MAINFOLDER}/velvetoutput/contigs.fa ${MAINFOLDER}/velvetoutput/velvet_contigs
+			bowtie2-build ${MAINFOLDER}/${NAME}_minia_output.fa ${MAINFOLDER}/minia_contigs 
+			
+			bowtie2 -p ${$PROCESSORS} -x ${MAINFOLDER}/velvetoutput/velvet_contigs -U ${MAINFOLDER}/${NAME}_minia_output.fa -S ${NAME}_miniaToVelvet
+			bowtie2 -p ${$PROCESSORS} -x ${MAINFOLDER}/minia_contigs -U ${MAINFOLDER}/velvetoutput/contigs.fa -S ${NAME}_velvetToMinia
+		echo ==== Finished aligning using bowtie ====
 
-
-
-
-# art_illumina -p -sam -i seq_reference.fa -l 50 -f 20 -m 200 -s 10 -o d./outdir/dat_paired_end
+for FILE in "${REFLIST[@]}"; do
+			NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
+			echo === Running Comparison: Minia vs Velvet ====
+			python ${DIR}/main.py ${NAME}_miniaToVelvet.sam
+			python ${DIR}/main.py ${NAME}_velvetToMinia.sam
+		echo === Finished running comparison of Minia and Velvet
+			
+echo ==== DONE ====
