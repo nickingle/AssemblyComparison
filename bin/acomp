@@ -3,15 +3,15 @@
 KMER=21
 MINREAD=3
 PROCESSORS=1
-FORMAT=fasta
+FORMAT=fa
 SKIP=0
 REPEAT=0
-MAINFOLDER=.
+MAINFOLDER=AssemblyComparsion
 
 DIRS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"    #where is the acomp file?
 DIR=$( dirname ${DIRS} ) #go one level up from location of acomp file
-echo "${MAINFOLDER}"
-MAINFOLDER=$( echo "${MAINFOLDER}" | sed -e "s/\/*$//" )    #remove trailing / if necessary
+#echo "${MAINFOLDER}"
+MAINFOLDER=$( echo "${DIR}" | sed -e "s/\/*$//" )    #remove trailing / if necessary
 REFFILES=( $( find "${MAINFOLDER}" -name "${FORMAT}" ) )     #all FORMAT file paths as array
 declare -a ALLFOLDERLIST=()
 for F in "${REFFILES[@]}"; do ALLFOLDERLIST+=("$( dirname "${F}" )"); done       #array of directories containing FORMAT files
