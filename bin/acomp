@@ -21,8 +21,9 @@ FOLDERLIST=( $(echo "${ALLFOLDERLIST[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' ')
 for FILE in "${REFLIST[@]}"; do
         NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' ) #includes folder but not the read or the extension
         echo ==== Simulating Sequences of ${NAME} ====
-		art_illumina -i ${FILE} -p  -l 50 -f 20 -m 200 -s 10 -o ${MAINFOLDER}/${NAME}_sim_seqs #Run art_illumina on reference file    done
-    echo ==== Done Simulating Reads ====
+		art_illumina -i ${FILE} -p  -l 50 -f 20 -m 200 -s 10 -o ${MAINFOLDER}/${NAME}_sim_seqs #Run art_illumina on reference file    
+	done
+ 	echo ==== Done Simulating Reads ====
 
 # Build seqences using velvet
 for FILE in "${REFLIST[@]}"; do
@@ -30,12 +31,14 @@ for FILE in "${REFLIST[@]}"; do
 		echo ==== Running Velvet on Simulated Seqs of ${NAME} ====
 		velveth ${MAINFOLDER}/velvetoutput ${KMER} -create_binary -fasta -shortPaired ${MAINFOLDER}/${NAME}_sim_seqs.fa
 		velvetg ${MAINFOLDER}/velvetoutput -exp_cov auto -cov_cutoff auto
+	done
 	echo ==== Finished Velvet Assembly ===
 
 for FILE in "${REFLIST[@]}"; do
 		NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
 		echo === Running Minia on Simulated Seqs of ${NAME} ===
 		minia -in ${MAINFOLDER}/${NAME}_sim_seqs.fa -kmer-size ${KMER} -abundance-min {$MINREAD} -out ${MAINFOLDER}/${NAME}_minia_ouput.fa
+	done
 	echo === Finished Minia Assembly ===
 	
 for FILE in "${REFLIST[@]}"; do
@@ -46,6 +49,7 @@ for FILE in "${REFLIST[@]}"; do
 			
 			bowtie2 -p ${$PROCESSORS} -x ${MAINFOLDER}/velvetoutput/velvet_contigs -U ${MAINFOLDER}/${NAME}_minia_output.fa -S ${NAME}_miniaToVelvet
 			bowtie2 -p ${$PROCESSORS} -x ${MAINFOLDER}/minia_contigs -U ${MAINFOLDER}/velvetoutput/contigs.fa -S ${NAME}_velvetToMinia
+		done
 		echo ==== Finished aligning using bowtie ====
 
 for FILE in "${REFLIST[@]}"; do
@@ -53,6 +57,7 @@ for FILE in "${REFLIST[@]}"; do
 			echo === Running Comparison: Minia vs Velvet ====
 			python ${DIR}/main.py ${NAME}_miniaToVelvet.sam
 			python ${DIR}/main.py ${NAME}_velvetToMinia.sam
+		done
 		echo === Finished running comparison of Minia and Velvet
 			
 echo ==== DONE ====
