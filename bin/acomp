@@ -14,11 +14,12 @@ DIR=$( dirname ${DIRS} ) #go one level up from location of acomp file
 MAINFOLDER=$( echo "${DIR}" | sed -e "s/\/*$//" )    #remove trailing / if necessary
 echo "${MAINFOLDER}"
 #REFFILES=( $( find "${MAINFOLDER}" -name "${FORMAT}" ) )     #all FORMAT file paths as array
-REFFILES=( "${MAINFOLDER}/lambda_virus.fa" )      #Testing REFFILES with pipeline
+REFFILES=( "${MAINFOLDER}/reads.fasta" )      #Testing REFFILES with pipeline
 declare -a ALLFOLDERLIST=()
 for F in "${REFFILES[@]}"; do ALLFOLDERLIST+=("$( dirname "${F}" )"); done       #array of directories containing FORMAT files
 FOLDERLIST=( $(echo "${ALLFOLDERLIST[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' ') )  #sorted unique list of folders with paired FORMAT files as array
 
+' #Until art_illumina is installed on hines keep this commented
 # Simulate Sequences using art_illumina
 for FILE in "${REFFILES[@]}"; do
         NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' ) #includes folder but not the read or the extension
@@ -26,7 +27,7 @@ for FILE in "${REFFILES[@]}"; do
 		art_illumina -i ${FILE} -p  -l 50 -f 20 -m 200 -s 10 -o ${MAINFOLDER}/${NAME}_sim_seqs #Run art_illumina on reference file    
 	done
  	echo ==== Done Simulating Reads ====
-
+'
 # Build seqences using velvet
 for FILE in "${REFFILES[@]}"; do
 		NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
