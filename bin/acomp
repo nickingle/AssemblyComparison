@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-KMER = 21
-MINREAD = 3
-PROCESSORS = 1
-FORMAT = fasta
-SKIP = 0
-REPEAT = 0
-MAINFOLDER = "."
+KMER=21
+MINREAD=3
+PROCESSORS=1
+FORMAT=fasta
+SKIP=0
+REPEAT=0
+MAINFOLDER=.
 
 DIRS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"    #where is the acomp file?
 DIR=$( dirname ${DIRS} )                                    #go one level up from location of acompfile
