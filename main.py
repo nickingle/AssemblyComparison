@@ -195,7 +195,7 @@ def printHighMatches(pma):
 			count += 1
 		else:
 			continue
-	print "# of Alignments w/ a Match Percentage over 98 percent = %d" % count			
+	print "# of Alignments w/ a Match Percentage over 98 percent = ", count			
 
 def graphPM(pma):
 	printHighMatches(pma)
