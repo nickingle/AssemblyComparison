@@ -6,12 +6,13 @@ PROCESSORS=1
 FORMAT=fa
 SKIP=0
 REPEAT=0
-MAINFOLDER=AssemblyComparsion
+MAINFOLDER=.
 
 DIRS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"    #where is the acomp file?
 DIR=$( dirname ${DIRS} ) #go one level up from location of acomp file
-echo "${DIR}"
+#echo "${DIR}"
 MAINFOLDER=$( echo "${DIR}" | sed -e "s/\/*$//" )    #remove trailing / if necessary
+echo "${MAINFOLDER}"
 REFFILES=( $( find "${MAINFOLDER}" -name "${FORMAT}" ) )     #all FORMAT file paths as array
 declare -a ALLFOLDERLIST=()
 for F in "${REFFILES[@]}"; do ALLFOLDERLIST+=("$( dirname "${F}" )"); done       #array of directories containing FORMAT files
