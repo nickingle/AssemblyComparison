@@ -18,7 +18,7 @@ for F in "${REFFILES[@]}"; do ALLFOLDERLIST+=("$( dirname "${F}" )"); done      
 FOLDERLIST=( $(echo "${ALLFOLDERLIST[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' ') )  #sorted unique list of folders with paired FORMAT files as array
 
 # Simulate Sequences using art_illumina
-for FILE in "${REFLIST[@]}"; do
+for FILE in "${REFFILES[@]}"; do
         NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' ) #includes folder but not the read or the extension
         echo ==== Simulating Sequences of ${NAME} ====
 		art_illumina -i ${FILE} -p  -l 50 -f 20 -m 200 -s 10 -o ${MAINFOLDER}/${NAME}_sim_seqs #Run art_illumina on reference file    
@@ -26,7 +26,7 @@ for FILE in "${REFLIST[@]}"; do
  	echo ==== Done Simulating Reads ====
 
 # Build seqences using velvet
-for FILE in "${REFLIST[@]}"; do
+for FILE in "${REFFILES[@]}"; do
 		NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
 		echo ==== Running Velvet on Simulated Seqs of ${NAME} ====
 		velveth ${MAINFOLDER}/velvetoutput ${KMER} -create_binary -fasta -shortPaired ${MAINFOLDER}/${NAME}_sim_seqs.fa
@@ -34,14 +34,14 @@ for FILE in "${REFLIST[@]}"; do
 	done
 	echo ==== Finished Velvet Assembly ===
 
-for FILE in "${REFLIST[@]}"; do
+for FILE in "${REFFILES[@]}"; do
 		NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
 		echo === Running Minia on Simulated Seqs of ${NAME} ===
 		minia -in ${MAINFOLDER}/${NAME}_sim_seqs.fa -kmer-size ${KMER} -abundance-min {$MINREAD} -out ${MAINFOLDER}/${NAME}_minia_ouput.fa
 	done
 	echo === Finished Minia Assembly ===
 	
-for FILE in "${REFLIST[@]}"; do
+for FILE in "${REFFILES[@]}"; do
 			NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
 			echo === Aligning Velvet and Minia Contigs ====
 			bowtie2-build ${MAINFOLDER}/velvetoutput/contigs.fa ${MAINFOLDER}/velvetoutput/velvet_contigs
@@ -52,7 +52,7 @@ for FILE in "${REFLIST[@]}"; do
 		done
 		echo ==== Finished aligning using bowtie ====
 
-for FILE in "${REFLIST[@]}"; do
+for FILE in "${REFFILES[@]}"; do
 			NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
 			echo === Running Comparison: Minia vs Velvet ====
 			python ${DIR}/main.py ${NAME}_miniaToVelvet.sam
