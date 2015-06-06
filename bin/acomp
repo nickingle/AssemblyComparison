@@ -33,7 +33,7 @@ for FILE in "${REFFILES[@]}"; do
 for FILE in "${REFFILES[@]}"; do
 		NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
 		echo ==== Running Velvet on Simulated Seqs of ${NAME} ====
-		velveth ${MAINFOLDER}/velvetoutput ${KMER} -create_binary -fasta -short ${MAINFOLDER}/reads_sim_seqs.fa
+		velveth ${MAINFOLDER}/velvetoutput ${KMER} -create_binary -fasta ${MAINFOLDER}/reads.fasta
 		velvetg ${MAINFOLDER}/velvetoutput -exp_cov auto -cov_cutoff auto
 	done
 	echo ==== Finished Velvet Assembly ===
