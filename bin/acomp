@@ -33,7 +33,7 @@ for FILE in "${REFFILES[@]}"; do
 for FILE in "${REFFILES[@]}"; do
 		NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
 		echo ==== Running Velvet on Simulated Seqs of ${NAME} ====
-		velveth ${MAINFOLDER}/velvetoutput ${KMER} -create_binary -fasta -short ${MAINFOLDER}/${NAME}_sim_seqs.fa
+		velveth ${MAINFOLDER}/velvetoutput ${KMER} -create_binary -fasta -short ${MAINFOLDER}/reads_sim_seqs.fa
 		velvetg ${MAINFOLDER}/velvetoutput -exp_cov auto -cov_cutoff auto
 	done
 	echo ==== Finished Velvet Assembly ===
@@ -41,7 +41,7 @@ for FILE in "${REFFILES[@]}"; do
 for FILE in "${REFFILES[@]}"; do
 		NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
 		echo === Running Minia on Simulated Seqs of ${NAME} ===
-		minia -in ${MAINFOLDER}/${NAME}_sim_seqs.fa -kmer-size ${KMER} -abundance-min {$MINREAD} -out ${MAINFOLDER}/${NAME}_minia_ouput.fa
+		minia -in ${MAINFOLDER}/reads_sim_seqs.fa -kmer-size ${KMER} -abundance-min {$MINREAD} -out ${MAINFOLDER}/reads_minia_ouput.fa
 	done
 	echo === Finished Minia Assembly ===
 	
@@ -49,18 +49,18 @@ for FILE in "${REFFILES[@]}"; do
 			NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
 			echo === Aligning Velvet and Minia Contigs ====
 			bowtie2-build ${MAINFOLDER}/velvetoutput/contigs.fa ${MAINFOLDER}/velvetoutput/velvet_contigs
-			bowtie2-build ${MAINFOLDER}/${NAME}_minia_output.fa ${MAINFOLDER}/minia_contigs 
+			bowtie2-build ${MAINFOLDER}/reads_minia_output.fa ${MAINFOLDER}/minia_contigs 
 			
-			bowtie2 -p ${$PROCESSORS} -x ${MAINFOLDER}/velvetoutput/velvet_contigs -U ${MAINFOLDER}/${NAME}_minia_output.fa -S ${NAME}_miniaToVelvet
-			bowtie2 -p ${$PROCESSORS} -x ${MAINFOLDER}/minia_contigs -U ${MAINFOLDER}/velvetoutput/contigs.fa -S ${NAME}_velvetToMinia
+			bowtie2 -p ${$PROCESSORS} -x ${MAINFOLDER}/velvetoutput/velvet_contigs -U ${MAINFOLDER}/reads_minia_output.fa -S reads_miniaToVelvet
+			bowtie2 -p ${$PROCESSORS} -x ${MAINFOLDER}/minia_contigs -U ${MAINFOLDER}/velvetoutput/contigs.fa -S reads_velvetToMinia
 		done
 		echo ==== Finished aligning using bowtie ====
 
 for FILE in "${REFFILES[@]}"; do
 			NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
 			echo === Running Comparison: Minia vs Velvet ====
-			python ${DIR}/main.py ${NAME}_miniaToVelvet.sam
-			python ${DIR}/main.py ${NAME}_velvetToMinia.sam
+			python ${DIR}/main.py reads_miniaToVelvet.sam
+			python ${DIR}/main.py reads_velvetToMinia.sam
 		done
 		echo === Finished running comparison of Minia and Velvet
 			
