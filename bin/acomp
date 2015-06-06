@@ -41,7 +41,7 @@ for FILE in "${REFFILES[@]}"; do
 for FILE in "${REFFILES[@]}"; do
 		NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
 		echo === Running Minia on Simulated Seqs of ${NAME} ===
-		minia -in ${MAINFOLDER}/reads_sim_seqs.fa -kmer-size ${KMER} -abundance-min {$MINREAD} -out ${MAINFOLDER}/reads_minia_ouput.fa
+		minia -in ${MAINFOLDER}/reads.fasta -kmer-size ${KMER} -abundance-min {$MINREAD} -out ${MAINFOLDER}/reads_minia_ouput.fa
 	done
 	echo === Finished Minia Assembly ===
 	
