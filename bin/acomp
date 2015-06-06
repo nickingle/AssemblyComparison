@@ -19,7 +19,8 @@ declare -a ALLFOLDERLIST=()
 for F in "${REFFILES[@]}"; do ALLFOLDERLIST+=("$( dirname "${F}" )"); done       #array of directories containing FORMAT files
 FOLDERLIST=( $(echo "${ALLFOLDERLIST[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' ') )  #sorted unique list of folders with paired FORMAT files as array
 
-' #Until art_illumina is installed on hines keep this commented
+' 
+#Until art_illumina is installed on hines keep this commented
 # Simulate Sequences using art_illumina
 for FILE in "${REFFILES[@]}"; do
         NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' ) #includes folder but not the read or the extension
@@ -32,7 +33,7 @@ for FILE in "${REFFILES[@]}"; do
 for FILE in "${REFFILES[@]}"; do
 		NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
 		echo ==== Running Velvet on Simulated Seqs of ${NAME} ====
-		velveth ${MAINFOLDER}/velvetoutput ${KMER} -create_binary -fasta -shortPaired ${MAINFOLDER}/${NAME}_sim_seqs.fa
+		velveth ${MAINFOLDER}/velvetoutput ${KMER} -create_binary -fasta -short ${MAINFOLDER}/${NAME}_sim_seqs.fa
 		velvetg ${MAINFOLDER}/velvetoutput -exp_cov auto -cov_cutoff auto
 	done
 	echo ==== Finished Velvet Assembly ===
