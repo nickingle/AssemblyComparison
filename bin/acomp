@@ -21,6 +21,7 @@ FOLDERLIST=( $(echo "${ALLFOLDERLIST[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' ')
 
 ' 
 #Until art_illumina is installed on hines keep this commented
+###############################################################
 # Simulate Sequences using art_illumina
 for FILE in "${REFFILES[@]}"; do
         NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' ) #includes folder but not the read or the extension
@@ -43,6 +44,7 @@ for FILE in "${REFFILES[@]}"; do
 for FILE in "${REFFILES[@]}"; do
 		NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
 		echo === Running Minia on Simulated Seqs of ${NAME} ===
+		
 		minia -in ${MAINFOLDER}/reads3.fasta -kmer-size ${KMER} -abundance-min {$MINREAD} -out ${MAINFOLDER}/minia_reads
 		# mv ${MAINFOLDER}/minia_ouput/minia_reads.contigs.fa ${MAINFOLDER}/minia_ouput/minia_reads.fa
 	done
@@ -68,12 +70,13 @@ for FILE in "${REFFILES[@]}"; do
 			echo === Finished Aligning velvet contigs to minia ====
 			
 			mv reads_miniaToVelvet.sam "${MAINFOLDER}"/reads_miniaToVelvet.sam
+			mv reads_velvetToMinia.sam "${MAINFOLDER}"/reads_velvetToMinia.sam
 		done
 		echo ==== Finished aligning all contigs using bowtie ====
 
 for FILE in "${REFFILES[@]}"; do
 			NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
-			echo === Running Comparison: Minia vs Velvet ====
+			echo === Running Comparison: Minia vs Velvet ==== # Needs pandas in order to run on hines
 			python ${DIR}/main.py reads_miniaToVelvet.sam
 			python ${DIR}/main.py reads_velvetToMinia.sam
 		done
