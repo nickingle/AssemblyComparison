@@ -10,7 +10,7 @@ MAINFOLDER=.
 
 DIRS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"    #where is the acomp file?
 DIR=$( dirname ${DIRS} ) #go one level up from location of acomp file
-echo "${BASH_SOURCE[0]}"
+echo "$( dirname "${BASH_SOURCE[0]}" )"
 exit 2
 MAINFOLDER=$( echo "${DIR}" | sed -e "s/\/*$//" )    #remove trailing / if necessary
 echo "${MAINFOLDER}"
