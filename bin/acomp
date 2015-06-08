@@ -58,7 +58,7 @@ for FILE in "${REFFILES[@]}"; do
 			echo === Finished Building Contigs ===
 			
 			echo ==== Aligning Velvet and Minia Contigs using Bowtie ====
-			bowtie2 -p "${PROCESSORS}" -x "${MAINFOLDER}"/velvet_contigs -f -U "${MAINFOLDER}"/reads_minia_output.fa -S reads_miniaToVelvet
+			bowtie2 -p "${PROCESSORS}" -x "${MAINFOLDER}"/velvet_contigs -f -U reads_minia_output.fa -S reads_miniaToVelvet
 			# bowtie2 -p ${PROCESSORS} -x ${MAINFOLDER}/minia_contigs -U ${MAINFOLDER}/velvetoutput/contigs.fa -S reads_velvetToMinia
 		done
 		echo ==== Finished aligning using bowtie ====
