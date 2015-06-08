@@ -68,7 +68,7 @@ for FILE in "${REFFILES[@]}"; do
 			echo === Finished Aligning minia contigs to velvet ====
 			echo              
 			echo === Aligning velvet contigs to minia ===
-			bowtie2 -p ${PROCESSORS} -x "${BOWTIEFOLDER}"/bowtieOutput/minia_contigs -f -U ${MAINFOLDER}/velvetoutput/contigs.fa -S reads_velvetToMinia.sam
+			bowtie2 -p ${PROCESSORS} -x "${BOWTIEFOLDER}"/minia_contigs -f -U ${MAINFOLDER}/velvetoutput/contigs.fa -S reads_velvetToMinia.sam
 			echo === Finished Aligning velvet contigs to minia ====
 			
 			mv reads_miniaToVelvet.sam "${MAINFOLDER}"/reads_miniaToVelvet.sam
