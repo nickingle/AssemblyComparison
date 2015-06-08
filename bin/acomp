@@ -12,10 +12,9 @@ DIRS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"    #where is the acomp 
 DIR=$( dirname ${DIRS} ) #go one level up from location of acomp file
 MAINFOLDER=$( echo "${DIR}" | sed -e "s/\/*$//" ) #remove trailing / if necessary
 MINIAFOLDER=$( echo "${MAINFOLDER}"/miniaOutput )
+BOWTIEFOLDER=$( echo "${MAINFOLDER}"/bowtieOutput)
 echo "${MINIAFOLDER}"
 exit 2
-# echo "${MAINFOLDER}"
-# exit 2
 #REFFILES=( $( find "${MAINFOLDER}" -name "${FORMAT}" ) )     #all FORMAT file paths as array
 REFFILES=( "${MAINFOLDER}/reads.fasta" )      #Testing REFFILES with pipeline
 declare -a ALLFOLDERLIST=()
@@ -48,7 +47,7 @@ for FILE in "${REFFILES[@]}"; do
 		NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
 		echo === Running Minia on Simulated Seqs of ${NAME} ===
 		
-		minia -in ${MAINFOLDER}/reads3.fasta -kmer-size ${KMER} -abundance-min {$MINREAD} -out "${MAINFOLDER}"/miniaOutput/minia_reads
+		minia -in ${MAINFOLDER}/reads3.fasta -kmer-size ${KMER} -abundance-min {$MINREAD} -out "${MINIAFOLDER}"/minia_reads
 		# mv ${MAINFOLDER}/minia_ouput/minia_reads.contigs.fa ${MAINFOLDER}/minia_ouput/minia_reads.fa
 	done
 	echo === Finished Minia Assembly ===
@@ -56,20 +55,20 @@ for FILE in "${REFFILES[@]}"; do
 for FILE in "${REFFILES[@]}"; do
 			NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
 			echo === Building Velvet and Minia Contigs using bowtieBuild ====
-			bowtie2-build -f "${MAINFOLDER}"/velvetoutput/contigs.fa "${MAINFOLDER}"/velvet_contigs # building velvet reference for bowtie 
+			bowtie2-build -f "${MAINFOLDER}"/velvetoutput/contigs.fa "${BOWTIEFOLDER}"/velvet_contigs # building velvet reference for bowtie 
 			echo === Finished Building velvet Contigs
 			
-			bowtie2-build -f "${MAINFOLDER}"/miniaOutput/minia_reads.contigs.fa "${MAINFOLDER}"/bowtieOutput/minia_contigs 
+			bowtie2-build -f "${MINIAFOLDER}"/minia_reads.contigs.fa "${BOWTIEFOLDER}"/minia_contigs 
 			echo === Finished Building minia Contigs ===
 			
 			echo ==== Aligning Velvet and Minia Contigs using Bowtie ====
 			echo ========================================================
 			echo === Aligning minia contigs to velvet ====
-			bowtie2 -p "${PROCESSORS}" -x "${MAINFOLDER}"/bowtieOutput/velvet_contigs -f -U "${MAINFOLDER}"/minia_reads.contigs.fa -S reads_miniaToVelvet.sam
+			bowtie2 -p "${PROCESSORS}" -x "${BOWTIEFOLDER}"/velvet_contigs -f -U "${MINIAFOLDER}"/minia_reads.contigs.fa -S reads_miniaToVelvet.sam
 			echo === Finished Aligning minia contigs to velvet ====
 			echo              
 			echo === Aligning velvet contigs to minia ===
-			bowtie2 -p ${PROCESSORS} -x "${MAINFOLDER}"/bowtieOutput/minia_contigs -f -U ${MAINFOLDER}/velvetoutput/contigs.fa -S reads_velvetToMinia.sam
+			bowtie2 -p ${PROCESSORS} -x "${BOWTIEFOLDER}"/bowtieOutput/minia_contigs -f -U ${MAINFOLDER}/velvetoutput/contigs.fa -S reads_velvetToMinia.sam
 			echo === Finished Aligning velvet contigs to minia ====
 			
 			mv reads_miniaToVelvet.sam "${MAINFOLDER}"/reads_miniaToVelvet.sam
