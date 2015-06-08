@@ -19,11 +19,11 @@ VELVETFOLDER=$( echo "${MAINFOLDER}"/velvetoutput )
 REFFILES=( $( find "${MAINFOLDER}" -name "*.${FORMAT}" ) )     #all FORMAT file paths as array
 #REFFILES=( "${MAINFOLDER}/reads.fasta" ) #Testing REFFILES with pipeline
 #for F in "${REFFILES[@]}"; do echo "${F}"; done
-for F in "${REFFILES[@]}"; do echo $(basename "${F}"); done
-exit 2
-declare -a ALLFOLDERLIST=()
-for F in "${REFFILES[@]}"; do ALLFOLDERLIST+=("$( dirname "${F}" )"); done       #array of directories containing FORMAT files
-FOLDERLIST=( $(echo "${ALLFOLDERLIST[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' ') )  #sorted unique list of folders with paired FORMAT files as array
+#for F in "${REFFILES[@]}"; do echo $(basename "${F}"); done
+#exit 2
+#declare -a ALLFOLDERLIST=()
+#for F in "${REFFILES[@]}"; do ALLFOLDERLIST+=("$( dirname "${F}" )"); done       #array of directories containing FORMAT files
+#FOLDERLIST=( $(echo "${ALLFOLDERLIST[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' ') )  #sorted unique list of folders with paired FORMAT files as array
 
 ' 
 #Until art_illumina is installed on hines keep this commented
