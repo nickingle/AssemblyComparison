@@ -51,18 +51,25 @@ for FILE in "${REFFILES[@]}"; do
 for FILE in "${REFFILES[@]}"; do
 			NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
 			echo === Building Velvet and Minia Contigs using bowtieBuild ====
-			
 			bowtie2-build -f "${MAINFOLDER}"/velvetoutput/contigs.fa "${MAINFOLDER}"/velvet_contigs # building velvet reference for bowtie 
-			# bowtie2-build -f ${MAINFOLDER}/reads_minia_output.fa minia_contigs 
+			echo === Finished Building velvet Contigs
 			
-			echo === Finished Building Contigs ===
+			bowtie2-build -f "${MAINFOLDER}"/minia_reads.contigs.fa "${MAINFOLDER}"/minia_contigs 
+			echo === Finished Building minia Contigs ===
 			
 			echo ==== Aligning Velvet and Minia Contigs using Bowtie ====
+			echo ========================================================
+			echo === Aligning minia contigs to velvet ====
 			bowtie2 -p "${PROCESSORS}" -x "${MAINFOLDER}"/velvet_contigs -f -U "${MAINFOLDER}"/minia_reads.contigs.fa -S reads_miniaToVelvet.sam
-			# bowtie2 -p ${PROCESSORS} -x ${MAINFOLDER}/minia_contigs -U ${MAINFOLDER}/velvetoutput/contigs.fa -S reads_velvetToMinia
+			echo === Finished Aligning minia contigs to velvet ====
+			echo              
+			echo === Aligning velvet contigs to minia ===
+			bowtie2 -p ${PROCESSORS} -x "${MAINFOLDER}"/minia_reads.contigs.fa -f -U ${MAINFOLDER}/velvetoutput/contigs.fa -S reads_velvetToMinia.sam
+			echo === Finished Aligning velvet contigs to minia ====
+			
 			mv reads_miniaToVelvet.sam "${MAINFOLDER}"/reads_miniaToVelvet.sam
 		done
-		echo ==== Finished aligning using bowtie ====
+		echo ==== Finished aligning all contigs using bowtie ====
 
 for FILE in "${REFFILES[@]}"; do
 			NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
