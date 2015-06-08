@@ -11,7 +11,7 @@ MAINFOLDER=.
 DIRS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"    #where is the acomp file?
 DIR=$( dirname ${DIRS} ) #go one level up from location of acomp file
 MAINFOLDER=$( echo "${DIR}" | sed -e "s/\/*$//" ) #remove trailing / if necessary
-MINIAFOLDER=$( echo "MAINFOLDER"/miniaOutput )
+MINIAFOLDER=$( echo "${MAINFOLDER}"/miniaOutput )
 echo "${MINIAFOLDER}"
 exit 2
 # echo "${MAINFOLDER}"
