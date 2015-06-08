@@ -10,7 +10,8 @@ MAINFOLDER=.
 
 DIRS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"    #where is the acomp file?
 DIR=$( dirname ${DIRS} ) #go one level up from location of acomp file
-#echo "${DIR}"
+echo "${BASH_SOURCE[0]}"
+exit 2
 MAINFOLDER=$( echo "${DIR}" | sed -e "s/\/*$//" )    #remove trailing / if necessary
 echo "${MAINFOLDER}"
 #REFFILES=( $( find "${MAINFOLDER}" -name "${FORMAT}" ) )     #all FORMAT file paths as array
