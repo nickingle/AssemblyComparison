@@ -16,7 +16,7 @@ BOWTIEFOLDER=$( echo "${MAINFOLDER}"/bowtieOutput )
 SAMFOLDER=$( echo "${MAINFOLDER}"/samFiles )
 
 REFFILES=( $( find "${MAINFOLDER}" -name "${FORMAT}" ) )     #all FORMAT file paths as array
-REFFILES=( "${MAINFOLDER}/reads.fasta" )      #Testing REFFILES with pipeline
+#REFFILES=( "${MAINFOLDER}/reads.fasta" )      #Testing REFFILES with pipeline
 echo "${REFFILES}"
 exit 2
 declare -a ALLFOLDERLIST=()
