@@ -13,8 +13,8 @@ DIR=$( dirname ${DIRS} ) #go one level up from location of acomp file
 MAINFOLDER=$( echo "${DIR}" | sed -e "s/\/*$//" ) #remove trailing / if necessary
 MINIAFOLDER=$( echo "${MAINFOLDER}"/miniaOutput )
 BOWTIEFOLDER=$( echo "${MAINFOLDER}"/bowtieOutput)
-echo "${MINIAFOLDER}"
-exit 2
+#echo "${MINIAFOLDER}"
+#exit 2
 #REFFILES=( $( find "${MAINFOLDER}" -name "${FORMAT}" ) )     #all FORMAT file paths as array
 REFFILES=( "${MAINFOLDER}/reads.fasta" )      #Testing REFFILES with pipeline
 declare -a ALLFOLDERLIST=()
