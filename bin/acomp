@@ -10,9 +10,12 @@ MAINFOLDER=.
 
 DIRS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"    #where is the acomp file?
 DIR=$( dirname ${DIRS} ) #go one level up from location of acomp file
-MAINFOLDER=$( echo "${DIR}" | sed -e "s/\/*$//" )    #remove trailing / if necessary
-echo "${MAINFOLDER}"
+MAINFOLDER=$( echo "${DIR}" | sed -e "s/\/*$//" ) #remove trailing / if necessary
+MINIAFOLDER=$( echo "MAINFOLDER"/miniaOutput )
+echo "${MINIAFOLDER}"
 exit 2
+# echo "${MAINFOLDER}"
+# exit 2
 #REFFILES=( $( find "${MAINFOLDER}" -name "${FORMAT}" ) )     #all FORMAT file paths as array
 REFFILES=( "${MAINFOLDER}/reads.fasta" )      #Testing REFFILES with pipeline
 declare -a ALLFOLDERLIST=()
@@ -49,7 +52,7 @@ for FILE in "${REFFILES[@]}"; do
 		# mv ${MAINFOLDER}/minia_ouput/minia_reads.contigs.fa ${MAINFOLDER}/minia_ouput/minia_reads.fa
 	done
 	echo === Finished Minia Assembly ===
-	
+
 for FILE in "${REFFILES[@]}"; do
 			NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
 			echo === Building Velvet and Minia Contigs using bowtieBuild ====
