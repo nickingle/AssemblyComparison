@@ -39,11 +39,11 @@ for FILE in "${REFFILES[@]}"; do
 	echo ==== Finished Velvet Assembly ===
 	
 # Build sequences using minia
-mkdir ${MAINFOLDER}/minia_output
+#mkdir ${MAINFOLDER}/minia_output
 for FILE in "${REFFILES[@]}"; do
 		NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
 		echo === Running Minia on Simulated Seqs of ${NAME} ===
-		minia -in ${MAINFOLDER}/reads.fasta -kmer-size ${KMER} -abundance-min {$MINREAD} -out "${MAINFOLDER}"/minia_ouput/minia_reads
+		minia -in ${MAINFOLDER}/reads.fasta -kmer-size ${KMER} -abundance-min {$MINREAD} -out ${MAINFOLDER}/minia_ouput/minia_reads
 		mv ${MAINFOLDER}/minia_ouput/minia_reads.contigs.fa ${MAINFOLDER}/minia_ouput/minia_reads.fa
 	done
 	echo === Finished Minia Assembly ===
