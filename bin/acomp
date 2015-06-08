@@ -17,7 +17,7 @@ SAMFOLDER=$( echo "${MAINFOLDER}"/samFiles )
 
 REFFILES=( $( find "${MAINFOLDER}" -name "*.${FORMAT}" ) )     #all FORMAT file paths as array
 #REFFILES=( "${MAINFOLDER}/reads.fasta" ) #Testing REFFILES with pipeline
-for F in "${REFFILES[@]}"; do echo "${F}" done
+for F in "${REFFILES[@]}"; do echo "${F}"; done
 exit 2
 declare -a ALLFOLDERLIST=()
 for F in "${REFFILES[@]}"; do ALLFOLDERLIST+=("$( dirname "${F}" )"); done       #array of directories containing FORMAT files
