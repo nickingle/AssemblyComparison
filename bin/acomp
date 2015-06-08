@@ -3,7 +3,7 @@
 KMER=21
 MINREAD=3
 PROCESSORS=1
-FORMAT=fa
+FORMAT=fasta
 SKIP=0
 REPEAT=0
 MAINFOLDER=.
@@ -12,11 +12,13 @@ DIRS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"    #where is the acomp 
 DIR=$( dirname ${DIRS} ) #go one level up from location of acomp file
 MAINFOLDER=$( echo "${DIR}" | sed -e "s/\/*$//" ) #remove trailing / if necessary
 MINIAFOLDER=$( echo "${MAINFOLDER}"/miniaOutput )
-BOWTIEFOLDER=$( echo "${MAINFOLDER}"/bowtieOutput)
-#echo "${MINIAFOLDER}"
-#exit 2
-#REFFILES=( $( find "${MAINFOLDER}" -name "${FORMAT}" ) )     #all FORMAT file paths as array
+BOWTIEFOLDER=$( echo "${MAINFOLDER}"/bowtieOutput )
+SAMFOLDER=$( echo "${MAINFOLDER}"/samFiles )
+
+REFFILES=( $( find "${MAINFOLDER}" -name "${FORMAT}" ) )     #all FORMAT file paths as array
 REFFILES=( "${MAINFOLDER}/reads.fasta" )      #Testing REFFILES with pipeline
+echo "${REFFILES}"
+exit 2
 declare -a ALLFOLDERLIST=()
 for F in "${REFFILES[@]}"; do ALLFOLDERLIST+=("$( dirname "${F}" )"); done       #array of directories containing FORMAT files
 FOLDERLIST=( $(echo "${ALLFOLDERLIST[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' ') )  #sorted unique list of folders with paired FORMAT files as array
@@ -71,16 +73,16 @@ for FILE in "${REFFILES[@]}"; do
 			bowtie2 -p ${PROCESSORS} -x "${BOWTIEFOLDER}"/minia_contigs -f -U ${MAINFOLDER}/velvetoutput/contigs.fa -S reads_velvetToMinia.sam
 			echo === Finished Aligning velvet contigs to minia ====
 			
-			mv reads_miniaToVelvet.sam "${MAINFOLDER}"/reads_miniaToVelvet.sam
-			mv reads_velvetToMinia.sam "${MAINFOLDER}"/reads_velvetToMinia.sam
+			mv reads_miniaToVelvet.sam "${SAMFOLDER}"/reads_miniaToVelvet.sam
+			mv reads_velvetToMinia.sam "${SAMFOLDER}"/reads_velvetToMinia.sam
 		done
 		echo ==== Finished aligning all contigs using bowtie ====
 
 for FILE in "${REFFILES[@]}"; do
 			NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
 			echo === Running Comparison: Minia vs Velvet ==== # Needs pandas in order to run on hines
-			python ${DIR}/main.py reads_miniaToVelvet.sam
-			python ${DIR}/main.py reads_velvetToMinia.sam
+			python ${DIR}/main.py "${SAMFOLDER}"/reads_miniaToVelvet.sam
+			python ${DIR}/main.py "${SAMFOLDER}"/reads_velvetToMinia.sam
 		done
 		echo === Finished running comparison of Minia and Velvet
 			
