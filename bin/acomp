@@ -15,7 +15,7 @@ DIRS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"    #where is the acomp 
 DIR=$( dirname ${DIRS} ) #go one level up from location of acomp file
 MAINFOLDER=$( echo "${DIR}" | sed -e "s/\/*$//" ) #remove trailing / if necessary
 
-while getopts o:k:i option
+while getopts "o:k:i:" option
 do
 	case "${option}"
 		in
