@@ -1,1 +1,2 @@
-
+bowtieOutput folder is used for the bowtie-build files used for the actual call to the bowtie aligner. It should not be
+confused with the samFile folder which is used to store the bowtie-aligner files for main.py to analyze
