@@ -1,1 +1,1 @@
-
+samFiles folder is used for the output of the bowtie comparisons
