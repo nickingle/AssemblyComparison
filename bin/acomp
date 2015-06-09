@@ -7,6 +7,7 @@ FORMAT=fasta
 SKIP=0
 REPEAT=0
 MAINFOLDER=.
+COUNT=0
 
 DIRS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"    #where is the acomp file?
 DIR=$( dirname ${DIRS} ) #go one level up from location of acomp file
@@ -71,36 +72,38 @@ for FILE in "${REFFILES[@]}"; do
 			MINIAFILE=$( echo "${NAME}".contigs.fa ) # minia contig file format for bowtie
 			MINIATOV=$( echo "${NAME}_miniaToVelvet.sam" )
 			VELVETTOM=$( echo "${NAME}_velvetToMinia.sam" )
-			echo === Building Velvet and Minia Contigs using bowtieBuild ====
+			echo === ${NAME} ::: Building Velvet and Minia Contigs using bowtieBuild ====
 			bowtie2-build -f $( echo "${VELVETF}"/contigs.fa ) $( echo "${BOWTIEFOLDER}"/${VELVETCONTIGS} ) # building velvet reference for bowtie 
-			echo === Finished Building velvet Contigs
+			echo === ${NAME} ::: Finished Building velvet Contigs ====
 			
 			bowtie2-build -f $( echo "${MINIAFOLDER}"/"${MINIAFILE}" ) $( echo "${BOWTIEFOLDER}"/${MINIACONTIGS} )
-			echo === Finished Building minia Contigs ===
+			echo === ${NAME} ::: Finished Building minia Contigs ===
 			
-			echo ==== Aligning Velvet and Minia Contigs using Bowtie ====
+			echo ==== ${NAME} ::: Aligning Velvet and Minia Contigs using Bowtie ====
 			echo ========================================================
-			echo === Aligning minia contigs to velvet ====
+			echo === ${NAME} ::: Aligning minia contigs to velvet ====
 			bowtie2 -p "${PROCESSORS}" -x $( echo "${BOWTIEFOLDER}"/${VELVETCONTIGS} ) -f -U $( echo "${MINIAFOLDER}"/"${MINIAFILE}" ) -S ${MINIATOV}
-			echo === Finished Aligning minia contigs to velvet ====
+			echo === ${NAME} ::: Finished Aligning minia contigs to velvet ====
 			echo              
-			echo === Aligning velvet contigs to minia ===
+			echo === ${NAME} ::: Aligning velvet contigs to minia ===
 			bowtie2 -p ${PROCESSORS} -x $( echo "${BOWTIEFOLDER}"/${MINIACONTIGS} ) -f -U $( echo "${VELVETF}"/contigs.fa ) -S ${VELVETTOM}
-			echo === Finished Aligning velvet contigs to minia ====
+			echo === ${NAME} ::: Finished Aligning velvet contigs to minia ====
+			COUNT=$((COUNT+1))
 			
 			#mv reads_miniaToVelvet.sam "${SAMFOLDER}"/reads_miniaToVelvet.sam
 			#mv reads_velvetToMinia.sam "${SAMFOLDER}"/reads_velvetToMinia.sam
 		done
-		echo ==== Finished aligning all contigs using bowtie ====
-exit 2
-'
+		echo ==== Finished aligning ${COUNT} sets of files using bowtie ====
+
+
 #Just to test out loops and variables 
 for FILE in "${REFFILES[@]}"; do
-			NAME=$( echo ${FILE} | sed 's/\.[^.]*$//' )
-			echo === Running Comparison: Minia vs Velvet ==== # Needs pandas in order to run on hines
-			python ${DIR}/main.py "${SAMFOLDER}"/reads_miniaToVelvet.sam
-			python ${DIR}/main.py "${SAMFOLDER}"/reads_velvetToMinia.sam
+			FNAME=$( echo $(basename "${FILE}") ) # file name including extension
+			NAME=$( echo $(basename "${FILE}" ".${FORMAT}") )
+			echo === ${NAME} ::: Running Minia vs Velvet Comparison  ==== # Needs pandas in order to run on hines
+			python ${DIR}/main.py $( echo "${SAMFOLDER}"/"${NAME}_miniaToVelvet.sam" )
+			python ${DIR}/main.py $( echo "${SAMFOLDER}"/"${NAME}_velvetToMinia.sam" )
 		done
-		echo === Finished running comparison of Minia and Velvet
-'			
+		echo === Finished running comparison of Minia and Velvet =====
+			
 echo ==== DONE ====
