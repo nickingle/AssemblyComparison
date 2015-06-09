@@ -47,7 +47,7 @@ for FILE in "${REFFILES[@]}"; do
 		velvetg "${VELVETF}" -exp_cov auto -cov_cutoff auto 
 	done
 	echo ==== Finished Velvet Assembly ===
-'
+
 # Build sequences using minia
 #mkdir ${MAINFOLDER}/minia_output
 for FILE in "${REFFILES[@]}"; do
@@ -59,40 +59,40 @@ for FILE in "${REFFILES[@]}"; do
 		# mv ${MAINFOLDER}/minia_ouput/minia_reads.contigs.fa ${MAINFOLDER}/minia_ouput/minia_reads.fa
 	done
 	echo === Finished Minia Assembly ===
-exit 2
-
+'
 for FILE in "${REFFILES[@]}"; do
 			FNAME=$( echo $(basename "${FILE}") ) # file name including extension
 			NAME=$( echo $(basename "${FILE}" ".${FORMAT}") )
 			MINIAF=$( echo "${MINIAFOLDER}"/"${FNAME}") # minia files with full path without extention
 			VELVETF=$( echo "${VELVETFOLDER}"/"${NAME}") # velvet files with full path
 			VELVETFN=$( echo "${VELVETFOLDER}"/"${FNAME}") # velvet files with full name and extension
-			BOWTIEBFV=$( echo "${BOWTIEFOLDER}"/"${NAME}_velvetContigs" ) # bowtie build path for velvet
-			BOWTIEBFM=$( echo "${BOWTIEFOLDER}"/"${NAME}_miniaContigs" ) # bowtie build path for minia
-			MINIABOW=$( echo "${MINIAF}".contigs.fa ) # minia contig file format for bowtie
+			VELVETCONTIGS=$( echo "${NAME}_velvetContigs" ) # bowtie build path for velvet
+			MINIACONTIGS=$( echo "${NAME}_miniaContigs" ) # bowtie build path for minia
+			MINIAFILE=$( echo "${NAME}".contigs.fa ) # minia contig file format for bowtie
 			MINIATOV=$( echo "${NAME}_miniaToVelvet.sam" )
 			VELVETTOM=$( echo "${NAME}_velvetToMinia.sam" )
 			echo === Building Velvet and Minia Contigs using bowtieBuild ====
-			bowtie2-build -f $( "${VELVETF}"/"${FNAME}" ) "${BOWTIEBFV}" # building velvet reference for bowtie 
+			bowtie2-build -f $( echo "${VELVETF}"/contigs.fa ) $( echo "${BOWTIEFOLDER}"/${VELVETCONTIGS} ) # building velvet reference for bowtie 
 			echo === Finished Building velvet Contigs
 			
-			bowtie2-build -f "${MINIABOW}" "${BOWTIEBFM}"
+			bowtie2-build -f $( echo "${MINIAFOLDER}"/"${MINIAFILE}" ) $( echo "${BOWTIEFOLDER}"/${MINIACONTIGS} )
 			echo === Finished Building minia Contigs ===
 			
 			echo ==== Aligning Velvet and Minia Contigs using Bowtie ====
 			echo ========================================================
 			echo === Aligning minia contigs to velvet ====
-			bowtie2 -p "${PROCESSORS}" -x "${BOWTIEBFV}" -f -U "${MINIABOW}" -S ${MINIATOV}
+			bowtie2 -p "${PROCESSORS}" -x $( echo "${BOWTIEFOLDER}"/${VELVETCONTIGS} ) -f -U "${MINIAFILE}" -S ${MINIATOV}
 			echo === Finished Aligning minia contigs to velvet ====
 			echo              
 			echo === Aligning velvet contigs to minia ===
-			bowtie2 -p ${PROCESSORS} -x "${BOWTIEFM}" -f -U ${VELVETFN} -S ${VELVETTOM}
+			bowtie2 -p ${PROCESSORS} -x $( echo "${BOWTIEFOLDER}"/${MINIACONTIGS} ) -f -U $( echo "${VELVETF}"/contigs.fa ) -S ${VELVETTOM}
 			echo === Finished Aligning velvet contigs to minia ====
 			
 			#mv reads_miniaToVelvet.sam "${SAMFOLDER}"/reads_miniaToVelvet.sam
 			#mv reads_velvetToMinia.sam "${SAMFOLDER}"/reads_velvetToMinia.sam
 		done
 		echo ==== Finished aligning all contigs using bowtie ====
+exit 2
 '
 #Just to test out loops and variables 
 for FILE in "${REFFILES[@]}"; do
