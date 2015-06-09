@@ -81,7 +81,7 @@ for FILE in "${REFFILES[@]}"; do
 			echo ==== Aligning Velvet and Minia Contigs using Bowtie ====
 			echo ========================================================
 			echo === Aligning minia contigs to velvet ====
-			bowtie2 -p "${PROCESSORS}" -x $( echo "${BOWTIEFOLDER}"/${VELVETCONTIGS} ) -f -U "${MINIAFILE}" -S ${MINIATOV}
+			bowtie2 -p "${PROCESSORS}" -x $( echo "${BOWTIEFOLDER}"/${VELVETCONTIGS} ) -f -U $( echo "${MINIAFOLDER}"/"${MINIAFILE}" ) -S ${MINIATOV}
 			echo === Finished Aligning minia contigs to velvet ====
 			echo              
 			echo === Aligning velvet contigs to minia ===
