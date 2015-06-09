@@ -3,7 +3,6 @@ import pysam
 import string
 import re
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
 
 # Method for creating dictionaries: 
