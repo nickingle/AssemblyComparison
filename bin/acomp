@@ -21,11 +21,11 @@ do
 		in
 		o) MAINFOLDER=${OPTARG};;
 		k) KMER=${OPTARG};;
-		i) REFILEO=${OPTARG};;
+		i) echo "OPTARG: $OPTARG";; #REFILEO=${OPTARG};;
 		?/ ) echo "ERROR: Unknown Option" exit 1;;
 	esac
-	echo ${OPTARG}
 done
+shift $(($OPTIND - 1))
 
 MAINFOLDER=$( echo "${MAINFOLDER}" | sed -e "s/\/*$//" )
 MINIAFOLDER=$( echo "${MAINFOLDER}"/miniaOutput )
