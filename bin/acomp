@@ -35,12 +35,12 @@ VELVETFOLDER=$( echo "${MAINFOLDER}"/velvetoutput )
 if [ -d $REFILEO ]; then 
 	REFILEO=$( echo "${REFILEO}" | sed -e "s/\/*$//" )
 	REFFILES=( $( find "${REFILEO}" -name "*.${FORMAT}" ) )
-	echo $REFILES
+	echo $REFILEO
 	echo directory found # Testing
 elif [ -a $REFILEO ]; then
 	REFILEO=$( echo "${REFILEO}" | sed -e "s/\/*$//" )
 	REFFILES=( $( find "${REFILEO}" -name "*.${FORMAT}" ) ) #all FORMAT file paths as array
-	echo $REFILES
+	echo $REFILEO
 	echo File found #Testing 
 else
 	REFFILES=( $( find "${MAINFOLDER}" -name "*.${FORMAT}" ) )
