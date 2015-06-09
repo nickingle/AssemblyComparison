@@ -21,9 +21,10 @@ do
 		in
 		o) MAINFOLDER=${OPTARG};;
 		k) KMER=${OPTARG};;
-		i) REFILEO="${OPTARG}";;
+		i) REFILEO=${OPTARG};;
 		?/ ) echo "ERROR: Unknown Option" exit 1;;
 	esac
+	echo ${OPTARG}
 done
 
 MAINFOLDER=$( echo "${MAINFOLDER}" | sed -e "s/\/*$//" )
