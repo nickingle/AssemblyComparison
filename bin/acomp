@@ -18,11 +18,11 @@ MAINFOLDER=$( echo "${DIR}" | sed -e "s/\/*$//" ) #remove trailing / if necessar
 while getopts o:k:i option
 do
 	case "${option}"
-	in
-	o) MAINFOLDER=${OPTARG};;
-	k) KMER=${OPTARG};;
-	i) REFFILEO=${OPTARG};;
-	?/ ) echo "ERROR: Unknown Option" exit 1;;
+		in
+		o) MAINFOLDER=${OPTARG};;
+		k) KMER=${OPTARG};;
+		i) REFILEO=${OPTARG};;
+		?/ ) echo "ERROR: Unknown Option" exit 1;;
 	esac
 done
 
