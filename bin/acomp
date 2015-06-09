@@ -43,8 +43,8 @@ for FILE in "${REFFILES[@]}"; do
 		NAME=$( echo $(basename "${FILE}" ".${FORMAT}") )
 		VELVETF=$( echo "${VELVETFOLDER}"/"${NAME}") # velvet files with full path
 		echo ==== Running Velvet on Simulated Seqs of "${NAME}" ====
-		velveth "${VELVETFOLDER}" ${KMER} -create_binary -fasta "${FILE}"
-		velvetg "${VELVETFOLDER}" -exp_cov auto -cov_cutoff auto 
+		velveth "${VELVETF}" ${KMER} -create_binary -fasta "${FILE}"
+		velvetg "${VELVETF}" -exp_cov auto -cov_cutoff auto 
 	done
 	echo ==== Finished Velvet Assembly ===
 exit 2	
