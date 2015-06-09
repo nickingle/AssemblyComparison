@@ -12,4 +12,4 @@ In order to use AssemblyComparison, the following software and libraries must be
 - bowtie2
 - pySAM
 - numpy
-- pandas
+- mathplotlib.py
