@@ -32,10 +32,10 @@ BOWTIEFOLDER=$( echo "${MAINFOLDER}"/bowtieOutput )
 SAMFOLDER=$( echo "${MAINFOLDER}"/samFiles )
 VELVETFOLDER=$( echo "${MAINFOLDER}"/velvetoutput )
 
-if [ (("$REFILEO" != ".")) -a (( -d ${REFILEO} )) ]; then
+if [ "$REFILEO" != "." && -d ${REFILEO} ]; then
 	REFILEO=$( echo "${REFILEO}" | sed -e "s/\/*$//" )
 	REFFILES=( $( find "${REFILEO}" -name "*.${FORMAT}" ) )     #all FORMAT file paths as array
-elif [ (("$REFILEO" != ".")) && (( -a ${REFILEO} )) ]; then 
+elif [ "$REFILEO" != "." &&  -a ${REFILEO} ]; then 
 	REFILEO=$( echo "${REFILEO}" | sed -e "s/\/*$//" )
 	REFFILES=( $( find "{REFILEO}" -name "*.${FORMAT}" ) )
 else
