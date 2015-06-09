@@ -1,1 +1,1 @@
-
+miniaOutput folder is used for handling the outputs of the minia assembler
