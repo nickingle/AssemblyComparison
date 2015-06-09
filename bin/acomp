@@ -36,7 +36,7 @@ for FILE in "${REFFILES[@]}"; do
 	done
  	echo ==== Done Simulating Reads ====
 '
-
+'
 # Build seqences using velvet
 for FILE in "${REFFILES[@]}"; do
 		FNAME=$( echo $(basename "${FILE}") ) # file name including extension
@@ -47,7 +47,7 @@ for FILE in "${REFFILES[@]}"; do
 		velvetg "${VELVETF}" -exp_cov auto -cov_cutoff auto 
 	done
 	echo ==== Finished Velvet Assembly ===
-exit 2	
+'
 # Build sequences using minia
 #mkdir ${MAINFOLDER}/minia_output
 for FILE in "${REFFILES[@]}"; do
@@ -59,6 +59,7 @@ for FILE in "${REFFILES[@]}"; do
 		# mv ${MAINFOLDER}/minia_ouput/minia_reads.contigs.fa ${MAINFOLDER}/minia_ouput/minia_reads.fa
 	done
 	echo === Finished Minia Assembly ===
+exit 2
 
 for FILE in "${REFFILES[@]}"; do
 			FNAME=$( echo $(basename "${FILE}") ) # file name including extension
