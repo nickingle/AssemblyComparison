@@ -42,6 +42,7 @@ else
 	REFFILES=( $( find "${MAINFOLDER}" -name "*.${FORMAT}" ) )
 fi
 
+exit 2
 #REFFILES=( "${MAINFOLDER}/reads.fasta" ) #Testing REFFILES with pipeline
 #for F in "${REFFILES[@]}"; do echo "${F}"; done
 #for F in "${REFFILES[@]}"; do echo $(basename "${F}"); done
