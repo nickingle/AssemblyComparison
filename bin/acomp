@@ -44,7 +44,7 @@ else
 	REFFILES=( $( find "${MAINFOLDER}" -name "*.${FORMAT}" ) )
 fi
 
-exit 2
+
 #REFFILES=( "${MAINFOLDER}/reads.fasta" ) #Testing REFFILES with pipeline
 #for F in "${REFFILES[@]}"; do echo "${F}"; done
 #for F in "${REFFILES[@]}"; do echo $(basename "${F}"); done
@@ -64,7 +64,7 @@ for FILE in "${REFFILES[@]}"; do
 	done
  	echo ==== Done Simulating Reads ====
 '
-'
+
 # Build seqences using velvet
 for FILE in "${REFFILES[@]}"; do
 		FNAME=$( echo $(basename "${FILE}") ) # file name including extension
@@ -76,6 +76,7 @@ for FILE in "${REFFILES[@]}"; do
 	done
 	echo ==== Finished Velvet Assembly ===
 
+exit 2
 # Build sequences using minia
 #mkdir ${MAINFOLDER}/minia_output
 for FILE in "${REFFILES[@]}"; do
