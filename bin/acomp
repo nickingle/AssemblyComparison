@@ -3,9 +3,7 @@
 KMER=21
 MINREAD=3
 PROCESSORS=1
-FORMAT=fasta
-SKIP=0
-REPEAT=0
+FORMAT=fasta # acomp was designed to run with fasta files:: it may give error if .fa is used instead
 MAINFOLDER=.
 REFILEO=.
 COUNT=0
@@ -15,46 +13,34 @@ DIRS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"    #where is the acomp 
 DIR=$( dirname ${DIRS} ) #go one level up from location of acomp file
 MAINFOLDER=$( echo "${DIR}" | sed -e "s/\/*$//" ) #remove trailing / if necessary
 
-while getopts "o:k:i:" option
+while getopts "k:i:" option
 do
 	case "${option}"
 		in
-		o) MAINFOLDER=${OPTARG};;
-		k) KMER=${OPTARG};;
-		i) REFILEO=${OPTARG};;  
+		k) KMER=${OPTARG};; # user inputted change in kmer size used in minia assemler
+		i) REFILEO=${OPTARG};; # user inputted folder or file to run through acomp
 		?/ ) echo "ERROR: Unknown Option" exit 1;;
 	esac
 done
 shift $(($OPTIND - 1))
 
-MAINFOLDER=$( echo "${MAINFOLDER}" | sed -e "s/\/*$//" )
-MINIAFOLDER=$( echo "${MAINFOLDER}"/miniaOutput )
-BOWTIEFOLDER=$( echo "${MAINFOLDER}"/bowtieOutput )
-SAMFOLDER=$( echo "${MAINFOLDER}"/samFiles )
-VELVETFOLDER=$( echo "${MAINFOLDER}"/velvetoutput )
+MAINFOLDER=$( echo "${MAINFOLDER}" | sed -e "s/\/*$//" ) # Folder for velvet, minia, and bowtie outputs
+MINIAFOLDER=$( echo "${MAINFOLDER}"/miniaOutput ) # Folder specifically for minia outputs
+BOWTIEFOLDER=$( echo "${MAINFOLDER}"/bowtieOutput ) # Folder specifically for bowtie-build outputs
+SAMFOLDER=$( echo "${MAINFOLDER}"/samFiles ) # Folder specifically for bowtie sam file outputs 
+VELVETFOLDER=$( echo "${MAINFOLDER}"/velvetoutput ) # Folder specifically for velvet outputs
 
-if [ -d $REFILEO ]; then 
+if [ -d $REFILEO ]; then # if statement for identifying if user input is a directory(folder)
 	REFILEO=$( echo "${REFILEO}" | sed -e "s/\/*$//" )
-	REFFILES=( $( find "${REFILEO}" -name "*.${FORMAT}" ) )
-	echo $REFILEO
+	REFFILES=( $( find "${REFILEO}" -name "*.${FORMAT}" ) ) # all FORMAT file paths as array
 	echo directory found # Testing
-elif [ -a $REFILEO ]; then
+elif [ -a $REFILEO ]; then # if statement for identifying if user input is just a file
 	REFILEO=$( echo "${REFILEO}" | sed -e "s/\/*$//" )
-	REFFILES=( $( find "${REFILEO}" -name "*.${FORMAT}" ) ) #all FORMAT file paths as array
-	echo $REFILEO
+	REFFILES=( $( find "${REFILEO}" -name "*.${FORMAT}" ) ) # all FORMAT file paths as array
 	echo File found #Testing 
-else
-	REFFILES=( $( find "${MAINFOLDER}" -name "*.${FORMAT}" ) )
+else 
+	REFFILES=( $( find "${MAINFOLDER}" -name "*.${FORMAT}" ) ) # if user input is invalid or empty acomp uses files in the MAINFOLDER
 fi
-
-
-#REFFILES=( "${MAINFOLDER}/reads.fasta" ) #Testing REFFILES with pipeline
-#for F in "${REFFILES[@]}"; do echo "${F}"; done
-#for F in "${REFFILES[@]}"; do echo $(basename "${F}"); done
-#exit 2
-#declare -a ALLFOLDERLIST=()
-#for F in "${REFFILES[@]}"; do ALLFOLDERLIST+=("$( dirname "${F}" )"); done       #array of directories containing FORMAT files
-#FOLDERLIST=( $(echo "${ALLFOLDERLIST[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' ') )  #sorted unique list of folders with paired FORMAT files as array
 
 ' 
 #Until art_illumina is installed on hines keep this commented
@@ -68,72 +54,89 @@ for FILE in "${REFFILES[@]}"; do
  	echo ==== Done Simulating Reads ====
 '
 
-# Build seqences using velvet
+# Build contigs using velvet
 for FILE in "${REFFILES[@]}"; do
 		FNAME=$( echo $(basename "${FILE}") ) # file name including extension
-		NAME=$( echo $(basename "${FILE}" ".${FORMAT}") )
+		NAME=$( echo $(basename "${FILE}" ".${FORMAT}") ) # file name w/o extension
 		VELVETF=$( echo "${VELVETFOLDER}"/"${NAME}") # velvet files with full path
+		
 		echo ==== Running Velvet on Simulated Seqs of "${NAME}" ====
-		velveth "${VELVETF}" ${KMER} -create_binary -fasta "${FILE}"
-		velvetg "${VELVETF}" -exp_cov auto -cov_cutoff auto 
+		
+		velveth "${VELVETF}" ${KMER} -create_binary -fasta "${FILE}" # create binary file for velvetg
+		velvetg "${VELVETF}" -exp_cov auto -cov_cutoff auto # run velvet assembler
 	done
 	echo ==== Finished Velvet Assembly ===
 
-exit 2
 # Build sequences using minia
 #mkdir ${MAINFOLDER}/minia_output
 for FILE in "${REFFILES[@]}"; do
 		FNAME=$( echo $(basename "${FILE}") ) # file name including extension
-		NAME=$( echo $(basename "${FILE}" ".${FORMAT}") )
+		NAME=$( echo $(basename "${FILE}" ".${FORMAT}") ) # file name w/o extension
 		MINIAF=$( echo "${MINIAFOLDER}"/"${NAME}") # minia files with full path without extention
+		
 		echo === Running Minia on Simulated Seqs of ${NAME} ===
-		minia -in "${FILE}" -kmer-size ${KMER} -abundance-min {$MINREAD} -out "${MINIAF}"
+		
+		minia -in "${FILE}" -kmer-size ${KMER} -abundance-min {$MINREAD} -out "${MINIAF}" # run minia
 		# mv ${MAINFOLDER}/minia_ouput/minia_reads.contigs.fa ${MAINFOLDER}/minia_ouput/minia_reads.fa
 	done
+	
 	echo === Finished Minia Assembly ===
-'
+	
+#Run Bowtie-build and bowtie aligner on minia and velvet outputs
 for FILE in "${REFFILES[@]}"; do
 			FNAME=$( echo $(basename "${FILE}") ) # file name including extension
-			NAME=$( echo $(basename "${FILE}" ".${FORMAT}") )
-			MINIAF=$( echo "${MINIAFOLDER}"/"${FNAME}") # minia files with full path without extention
-			VELVETF=$( echo "${VELVETFOLDER}"/"${NAME}") # velvet files with full path
-			VELVETFN=$( echo "${VELVETFOLDER}"/"${FNAME}") # velvet files with full name and extension
-			VELVETCONTIGS=$( echo "${NAME}_velvetContigs" ) # bowtie build path for velvet
-			MINIACONTIGS=$( echo "${NAME}_miniaContigs" ) # bowtie build path for minia
-			MINIAFILE=$( echo "${NAME}".contigs.fa ) # minia contig file format for bowtie
-			MINIATOV=$( echo "${NAME}_miniaToVelvet.sam" )
-			VELVETTOM=$( echo "${NAME}_velvetToMinia.sam" )
+			NAME=$( echo $(basename "${FILE}" ".${FORMAT}") ) # file name w/o extension
+			MINIAF=$( echo "${MINIAFOLDER}"/"${FNAME}") # path to minia output for $FILE
+			VELVETF=$( echo "${VELVETFOLDER}"/"${NAME}") # path to velvet output folder for $FILE
+			VELVETCONTIGS=$( echo "${NAME}_velvetContigs" ) # bowtie-build output tag for velvet input
+			MINIACONTIGS=$( echo "${NAME}_miniaContigs" ) # bowtie-build output tag for minia input
+			MINIAFILE=$( echo "${NAME}".contigs.fa ) # $FILE's minia ouput for bowtie2
+			MINIATOV=$( echo "${NAME}_miniaToVelvet.sam" ) # output file for bowtie that uses velvet as reference 
+			VELVETTOM=$( echo "${NAME}_velvetToMinia.sam" ) # output file for bowtie that uses minia as reference
+			
 			echo === ${NAME} ::: Building Velvet and Minia Contigs using bowtieBuild ====
 			bowtie2-build -f $( echo "${VELVETF}"/contigs.fa ) $( echo "${BOWTIEFOLDER}"/${VELVETCONTIGS} ) # building velvet reference for bowtie 
 			echo === ${NAME} ::: Finished Building velvet Contigs ====
 			
-			bowtie2-build -f $( echo "${MINIAFOLDER}"/"${MINIAFILE}" ) $( echo "${BOWTIEFOLDER}"/${MINIACONTIGS} )
+			bowtie2-build -f $( echo "${MINIAFOLDER}"/"${MINIAFILE}" ) $( echo "${BOWTIEFOLDER}"/${MINIACONTIGS} ) # building minia reference for bowtie
 			echo === ${NAME} ::: Finished Building minia Contigs ===
 			
 			echo ==== ${NAME} ::: Aligning Velvet and Minia Contigs using Bowtie ====
 			echo ========================================================
 			echo === ${NAME} ::: Aligning minia contigs to velvet ====
+			
+			# bowtie2 using velvet output as the reference genome and minia output as unpaired reads
 			bowtie2 -p "${PROCESSORS}" -x $( echo "${BOWTIEFOLDER}"/${VELVETCONTIGS} ) -f -U $( echo "${MINIAFOLDER}"/"${MINIAFILE}" ) -S ${MINIATOV}
+			
 			echo === ${NAME} ::: Finished Aligning minia contigs to velvet ====
 			echo              
 			echo === ${NAME} ::: Aligning velvet contigs to minia ===
-			bowtie2 -p ${PROCESSORS} -x $( echo "${BOWTIEFOLDER}"/${MINIACONTIGS} ) -f -U $( echo "${VELVETF}"/contigs.fa ) -S ${VELVETTOM}
-			echo === ${NAME} ::: Finished Aligning velvet contigs to minia ====
-			COUNT=$((COUNT+1))
 			
-			#mv reads_miniaToVelvet.sam "${SAMFOLDER}"/reads_miniaToVelvet.sam
-			#mv reads_velvetToMinia.sam "${SAMFOLDER}"/reads_velvetToMinia.sam
+			# bowtie2 using minia output as reference genome and velvet output as unpaired reads
+			bowtie2 -p ${PROCESSORS} -x $( echo "${BOWTIEFOLDER}"/${MINIACONTIGS} ) -f -U $( echo "${VELVETF}"/contigs.fa ) -S ${VELVETTOM}
+			
+			echo === ${NAME} ::: Finished Aligning velvet contigs to minia ====
+			COUNT=$((COUNT+1)) # tracking the count of the number of files 
+	
 		done
 		echo ==== Finished aligning ${COUNT} sets of files using bowtie ====
 
 
-#Just to test out loops and variables 
+# Run main.py on bowtie samfile outputs
 for FILE in "${REFFILES[@]}"; do
 			FNAME=$( echo $(basename "${FILE}") ) # file name including extension
-			NAME=$( echo $(basename "${FILE}" ".${FORMAT}") )
-			echo === ${NAME} ::: Running Minia vs Velvet Comparison  ==== # Needs pandas in order to run on hines
-			python ${DIR}/main.py $( echo "${SAMFOLDER}"/"${NAME}_miniaToVelvet.sam" )
+			NAME=$( echo $(basename "${FILE}" ".${FORMAT}") ) # file name w/o extension
+			
+			echo === ${NAME} ::: Running Minia vs Velvet Comparison  ====
+			
+			#Run main.py and read in sam file output of bowtie
+			python ${DIR}/main.py $( echo "${SAMFOLDER}"/"${NAME}_miniaToVelvet.sam" ) 
 			python ${DIR}/main.py $( echo "${SAMFOLDER}"/"${NAME}_velvetToMinia.sam" )
+			
+			#NOTE: will probably modify main.py to take in a list of sam files and 
+			#      have it ouput a grid of the different samfile graphs for easy viewing.
+			#      Currently, it will ouput one graph at a time and if it is already 
+			#      running in the background the graph will not be visible.
 		done
 		echo === Finished running comparison of Minia and Velvet =====
 			
