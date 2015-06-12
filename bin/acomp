@@ -33,11 +33,11 @@ VELVETFOLDER=$( echo "${MAINFOLDER}"/velvetoutput ) # Folder specifically for ve
 if [ -d $REFILEO ]; then # if statement for identifying if user input is a directory(folder)
 	REFILEO=$( echo "${REFILEO}" | sed -e "s/\/*$//" )
 	REFFILES=( $( find "${REFILEO}" -name "*.${FORMAT}" ) ) # all FORMAT file paths as array
-	echo directory found # Testing
+	# echo directory found # Testing
 elif [ -a $REFILEO ]; then # if statement for identifying if user input is just a file
 	REFILEO=$( echo "${REFILEO}" | sed -e "s/\/*$//" )
 	REFFILES=( $( find "${REFILEO}" -name "*.${FORMAT}" ) ) # all FORMAT file paths as array
-	echo File found #Testing 
+	# echo File found #Testing 
 else 
 	REFFILES=( $( find "${MAINFOLDER}" -name "*.${FORMAT}" ) ) # if user input is invalid or empty acomp uses files in the MAINFOLDER
 fi
@@ -54,6 +54,7 @@ for FILE in "${REFFILES[@]}"; do
  	echo ==== Done Simulating Reads ====
 '
 
+'
 # Build contigs using velvet
 for FILE in "${REFFILES[@]}"; do
 		FNAME=$( echo $(basename "${FILE}") ) # file name including extension
@@ -90,7 +91,7 @@ for FILE in "${REFFILES[@]}"; do
 			VELVETF=$( echo "${VELVETFOLDER}"/"${NAME}") # path to velvet output folder for $FILE
 			VELVETCONTIGS=$( echo "${NAME}_velvetContigs" ) # bowtie-build output tag for velvet input
 			MINIACONTIGS=$( echo "${NAME}_miniaContigs" ) # bowtie-build output tag for minia input
-			MINIAFILE=$( echo "${NAME}".contigs.fa ) # $FILE's minia ouput for bowtie2
+			MINIAFILE=$( echo "${NAME}".contigs.fa ) # $FILEs minia ouput for bowtie2
 			MINIATOV=$( echo "${NAME}_miniaToVelvet.sam" ) # output file for bowtie that uses velvet as reference 
 			VELVETTOM=$( echo "${NAME}_velvetToMinia.sam" ) # output file for bowtie that uses minia as reference
 			
@@ -121,7 +122,7 @@ for FILE in "${REFFILES[@]}"; do
 		done
 		echo 
 		echo ==== Finished aligning ${COUNT} sets of files using bowtie ====
-
+'
 
 # Run main.py on bowtie samfile outputs
 echo
