@@ -217,11 +217,13 @@ def graphAllPMs(pmList, names, n):
 		pm = list(pmList)[y]
 		axes[y,0].hist(pm, range = (min(pm), 100))
 		name = list(names)[y]
-		title = '%s : minia to velvet', name
+		title = '{0} : minia to velvet'.format(name)
+		axes.set_title(title, fontsize=10)
 		axes[y,0].set_title(title)
 		pm = list(pmList)[y+1]
 		axes[y,1].hist(pm, range = (min(pm), 100))
-		title = '%s : velvet to minia', name
+		title = '{0} : velvet to minia'.format(name)
+		axes[y,1].set_title(title, fontsize=10)
 	fig.suptitle("Count of Percent Matches")
 	fig.savefig('results.pdf')
 	plt.close(fig)
