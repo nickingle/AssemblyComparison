@@ -279,7 +279,7 @@ if __name__ == "__main__":
 	names = list()
 	
 	for x in range(2,(inputnum+1)):
-		counter++
+		counter += 1
 		if counter == 3:
 			print(sys.argv[x])
 			names.append(str(sys.argv[x]))
