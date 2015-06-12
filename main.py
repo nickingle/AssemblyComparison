@@ -221,7 +221,6 @@ def graphAllPMs(pmList, names, n):
 		axes[y,0].set_title(title)
 		pm = list(pmList)[y+1]
 		axes[y,1].hist(pm, range = (min(pm), 100))
-		name = list(names)[y+1]
 		title = '%s : velvet to minia', name
 	fig.suptitle("Count of Percent Matches")
 	fig.savefig('results.pdf')
