@@ -5,6 +5,8 @@ import re
 import numpy as np
 import matplotlib.pyplot as plt
 
+plt.ioff()
+
 # Method for creating dictionaries: 
 # MisMatch Dictionary: mm_d = [qname, MD Tag] for each line of SAM
 # CigarString Dictionary: cs_d = [qname], CigarString] for each line of SAM
