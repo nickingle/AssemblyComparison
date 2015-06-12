@@ -211,8 +211,9 @@ def graphPM(pma):
 # Method for Printing out graphs for a list of samfiles	using matplotlib
 def graphAllPMs(pmList, names, n):
 	axlist = list(names)
-	fig, axes = plt.subplots(nrows=n, ncols=2)
 	num = int(n/2)
+	fig, axes = plt.subplots(nrows=num, ncols=2)
+
 	for y in range(0, num):
 		pm = list(pmList)[y]
 		axes[y,0].hist(pm, range = (min(pm), 100))
@@ -224,6 +225,7 @@ def graphAllPMs(pmList, names, n):
 		axes[y,1].hist(pm, range = (min(pm), 100))
 		title = '{0} : velvet to minia'.format(name)
 		axes[y,1].set_title(title, fontsize=10)
+		
 	fig.suptitle("Count of Percent Matches")
 	fig.savefig('results.png')
 	plt.close(fig)
