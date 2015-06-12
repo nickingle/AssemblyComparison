@@ -227,6 +227,7 @@ def graphAllPMs(pmList, names, n):
 		axes[y,1].set_title(title, fontsize=10)
 		
 	fig.suptitle("Count of Percent Matches")
+	fig.subplots_adjust(hspace=0.4)
 	fig.savefig('results.png')
 	plt.close(fig)
 	
