@@ -278,6 +278,7 @@ if __name__ == "__main__":
 	
 	for x in range(2,int(numOfFiles)+int(n)):
 		if (4 + 3*(x-4)) >= 4:
+			print str(sys.argv[x])
 			names.append(str(sys.argv[x]))
 		else:
 			samfile = pysam.AlignmentFile(str(sys.argv[x]), "r")
