@@ -54,7 +54,7 @@ for FILE in "${REFFILES[@]}"; do
  	echo ==== Done Simulating Reads ====
 '
 
-'
+
 # Build contigs using velvet
 for FILE in "${REFFILES[@]}"; do
 		FNAME=$( echo $(basename "${FILE}") ) # file name including extension
@@ -122,7 +122,7 @@ for FILE in "${REFFILES[@]}"; do
 		done
 		echo 
 		echo ==== Finished aligning ${COUNT} sets of files using bowtie ====
-'
+
 
 # Run main.py on bowtie samfile outputs
 echo
