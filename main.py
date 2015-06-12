@@ -269,17 +269,21 @@ def createCigSeries(csd):
 # ##############################################################################
 if __name__ == "__main__":
 	input("Press Enter to display results...")
-	n = sys.argv[1]
+	n = int(sys.argv[1])
 	pm_array = []
+	inputnum = 3*n
 	numOfFiles = n*2
+	counter = 0
 	samfilelist = list()
 	pmList = list()
 	names = list()
 	
-	for x in range(2,int(numOfFiles)+int(n)):
-		if (4 + 3*(x-4)) >= 4:
+	for x in range(2,(inputnum+1)):
+		counter++
+		if counter == 3:
 			print(sys.argv[x])
 			names.append(str(sys.argv[x]))
+			counter = 0
 		else:
 			samfile = pysam.AlignmentFile(str(sys.argv[x]), "r")
 			samfilelist.append(samfile) # [x-2-numOfnames] is location of 
