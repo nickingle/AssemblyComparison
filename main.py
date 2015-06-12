@@ -274,7 +274,7 @@ if __name__ == "__main__":
 	pmList = list()
 	names = list()
 	
-	for x in range(2,int(numOfFiles)+1)):
+	for x in range(2,int(numOfFiles)+1):
 		if (4 + 3*(x-4)) >= 4:
 			names.append(sys.argv[x])
 		else:
