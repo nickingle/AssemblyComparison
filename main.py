@@ -284,7 +284,7 @@ if __name__ == "__main__":
 			samfilelist.append(samfile) # [x-2-numOfnames] is location of 
 			md_dict, cig_dict = createDicts(samfile)
 			pm_array = createPMarray(cig_dict, md_dict)
-			pmList.append(pmarray)
+			pmList.append(pm_array)
 			samfile.close()
 			
 	graphAllPMs(pmList, names, numOfFiles)
