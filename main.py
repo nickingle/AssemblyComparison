@@ -291,7 +291,7 @@ if __name__ == "__main__":
 			pm_array = createPMarray(cig_dict, md_dict)
 			pmList.append(pm_array)
 			samfile.close()
-			
+	print(counter)
 	graphAllPMs(pmList, names, numOfFiles)
 			# ready to test tomorrow. 
 			# need to update acomp to input files in
