@@ -225,7 +225,7 @@ def graphAllPMs(pmList, names, n):
 		title = '{0} : velvet to minia'.format(name)
 		axes[y,1].set_title(title, fontsize=10)
 	fig.suptitle("Count of Percent Matches")
-	fig.savefig('results.pdf')
+	fig.savefig('results.png')
 	plt.close(fig)
 	
 	
