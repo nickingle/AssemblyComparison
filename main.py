@@ -3,6 +3,7 @@ import pysam
 import string
 import re
 import numpy as np
+import mathplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
