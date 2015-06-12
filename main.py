@@ -219,7 +219,8 @@ def graphAllPMs(pmList, names, n):
 		name = list(names)[y+1]
 		title = '%s : velvet to minia', name
 	fig.suptitle("Count of Percent Matches")
-	plt.show()
+	fig.savefig('results.pdf')
+	plt.close(fig)
 	
 	
 					
