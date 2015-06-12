@@ -3,6 +3,7 @@ import pysam
 import string
 import re
 import numpy as np
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 plt.ioff()
