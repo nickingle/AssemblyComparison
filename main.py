@@ -267,14 +267,14 @@ def createCigSeries(csd):
 # MAIN METHOD ##################################################################
 # ##############################################################################
 if __name__ == "__main__":
-	input("Press Enter to continue...")
+	input("Press Enter to display results...")
 	n = sys.argv[1]
 	numOfFiles = n*2
 	samfilelist = list()
 	pmList = list()
 	names = list()
 	
-	for x in range(2,(numOfFiles+1)):
+	for x in range(2,int(numOfFiles)+1)):
 		if (4 + 3*(x-4)) >= 4:
 			names.append(sys.argv[x])
 		else:
