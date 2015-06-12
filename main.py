@@ -281,7 +281,6 @@ if __name__ == "__main__":
 	for x in range(2,(inputnum+2)):
 		counter += 1
 		if counter == 3:
-			print(sys.argv[x])
 			names.append(str(sys.argv[x]))
 			counter = 0
 		else:
@@ -291,7 +290,7 @@ if __name__ == "__main__":
 			pm_array = createPMarray(cig_dict, md_dict)
 			pmList.append(pm_array)
 			samfile.close()
-	print(counter)
+			
 	graphAllPMs(pmList, names, numOfFiles)
 			# ready to test tomorrow. 
 			# need to update acomp to input files in
