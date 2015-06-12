@@ -270,6 +270,7 @@ def createCigSeries(csd):
 if __name__ == "__main__":
 	input("Press Enter to display results...")
 	n = sys.argv[1]
+	pm_array = []
 	numOfFiles = n*2
 	samfilelist = list()
 	pmList = list()
