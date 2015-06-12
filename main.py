@@ -212,7 +212,7 @@ def graphPM(pma):
 def graphAllPMs(pmList, names, n):
 	axlist = list(names)
 	fig, axes = plt.subplots(nrows=n, ncols=2)
-	for y in range(0, ((n/2)-1)):
+	for y in range(0, (n/2)):
 		pm = list(pmList)[y]
 		axes[y,0].hist(pm, range = (min(pm), 100))
 		name = list(names)[y]
@@ -295,7 +295,7 @@ if __name__ == "__main__":
 			pmList.append(pm_array)
 			samfile.close()
 			
-	graphAllPMs(pmList, names, numOfFiles)
+	graphAllPMs(pmList, names, int(numOfFiles))
 			# ready to test tomorrow. 
 			# need to update acomp to input files in
 			
