@@ -119,10 +119,15 @@ for FILE in "${REFFILES[@]}"; do
 			COUNT=$((COUNT+1)) # tracking the count of the number of files 
 	
 		done
+		echo 
 		echo ==== Finished aligning ${COUNT} sets of files using bowtie ====
 
 
 # Run main.py on bowtie samfile outputs
+echo
+echo
+echo ==== Running Graph Comparison on SamFiles ====
+echo
 MAIN_INPUT=$( echo $COUNT )
 for FILE in "${REFFILES[@]}"; do
 			FNAME=$( echo $(basename "${FILE}") ) # file name including extension
@@ -139,8 +144,9 @@ for FILE in "${REFFILES[@]}"; do
 		done
 
 echo "${MAIN_INPUT}"
-exit 2
-			
+	
+	# Run main.py on MAIN_INPUT
+	python ${DIR}/main.py $( echo "${MAIN_INPUT}" )
 			
 			#Run main.py and read in sam file output of bowtie
 			# python ${DIR}/main.py $( echo "${SAMFOLDER}"/"${NAME}_miniaToVelvet.sam" ) 
