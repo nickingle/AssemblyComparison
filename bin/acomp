@@ -129,7 +129,8 @@ echo
 echo
 echo ==== Running Graph Comparison on SamFiles ====
 echo
-MAIN_INPUT=$( echo $COUNT )
+# MAIN_INPUT=$( echo $COUNT ) #Commented out for testing
+MAIN_INPUT=$( echo "2" )
 for FILE in "${REFFILES[@]}"; do
 			FNAME=$( echo $(basename "${FILE}") ) # file name including extension
 			NAME=$( echo $(basename "${FILE}" ".${FORMAT}") ) # file name w/o extension
