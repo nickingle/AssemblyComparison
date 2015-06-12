@@ -194,7 +194,7 @@ def printHighMatches(pma):
 			count += 1
 		else:
 			continue
-	print("# of Alignments w/ a Match Percentage over 98 percent = ", count)			
+	# print "# of Alignments w/ a Match Percentage over 98 percent = ", count			
 
 def graphPM(pma):
 	printHighMatches(pma)
@@ -203,6 +203,25 @@ def graphPM(pma):
 	plt.xlabel('Percent Match')
 	plt.title('Count of Percent Matches')
 	plt.show()
+
+# Method for Printing out graphs for a list of samfiles	using matplotlib
+def graphAllPMs(pmList, names, n):
+	axlist = list(names)
+	fig, axes = plt.subplots(nrows=n, ncols=2)
+	for y in range(0, ((n/2)-1)):
+		pm = list(pmList)[y]
+		axes[y,0].hist(pm, range = (min(pm), 100))
+		name = list(names)[y]
+		title = '%s : minia to velvet', name
+		axes[y,0].set_title(title)
+		pm = list(pmList)[y+1]
+		axes[y,1].hist(pm, range = (min(pm), 100))
+		name = list(names)[y+1]
+		title = '%s : velvet to minia', name
+	fig.suptitle("Count of Percent Matches")
+	plt.show()
+	
+	
 					
 
 # Method that creates a series for NumPy to interpret and plot using the 
@@ -248,14 +267,34 @@ def createCigSeries(csd):
 # MAIN METHOD ##################################################################
 # ##############################################################################
 if __name__ == "__main__":
-	samfile = pysam.AlignmentFile(sys.argv[1], "r")
-	md_dict, cig_dict = createDicts(samfile)
-	pm_array = createPMarray(cig_dict, md_dict)
-	graphPM(pm_array)
+	input("Press Enter to continue...")
+	n = sys.argv[1]
+	numOfFiles = n*2
+	samfilelist = list()
+	pmList = list()
+	names = list()
+	
+	for x in range(2,(numOfFiles+1)):
+		if (4 + 3*(x-4)) >= 4:
+			names.append(sys.argv[x])
+		else:
+			samfile = pysam.AlignmentFile(sys.argv[x], "r")
+			samfilelist.append(samfile) # [x-2-numOfnames] is location of 
+			md_dict, cig_dict = createDicts(samfile)
+			pm_array = createPMarray(cig_dict, md_dict)
+			pmList.append(pmarray)
+			samfile.close()
+			
+	graphAllPMs(pmList, names, numOfFiles)
+			# ready to test tomorrow. 
+			# need to update acomp to input files in
+			
+			
+#graphPM(pm_array)
 	
 	
 	
-	samfile.close()
+	
 	
 # Finished createPercent Match array to build histogram graph to show coverage
 # percentages
