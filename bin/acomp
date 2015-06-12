@@ -130,7 +130,7 @@ echo
 echo ==== Running Graph Comparison on SamFiles ====
 echo
 # MAIN_INPUT=$( echo $COUNT ) #Commented out for testing
-MAIN_INPUT=$( echo "2" )
+MAIN_INPUT=2
 for FILE in "${REFFILES[@]}"; do
 			FNAME=$( echo $(basename "${FILE}") ) # file name including extension
 			NAME=$( echo $(basename "${FILE}" ".${FORMAT}") ) # file name w/o extension
@@ -148,7 +148,7 @@ for FILE in "${REFFILES[@]}"; do
 echo "${MAIN_INPUT}"
 	
 	# Run main.py on MAIN_INPUT
-	python ${DIR}/main.py "${MAIN_INPUT}"
+	python $( echo ${DIR}/main.py ) $( echo "${MAIN_INPUT}" )
 			
 			#Run main.py and read in sam file output of bowtie
 			# python ${DIR}/main.py $( echo "${SAMFOLDER}"/"${NAME}_miniaToVelvet.sam" ) 
