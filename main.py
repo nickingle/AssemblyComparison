@@ -229,8 +229,8 @@ def graphAllPMs(pmList, names, n):
 		axes[y,1].set_xlabel('% coverage', fontsize=10)
 		axes[y,1].set_ylabel('# of contigs', fontsize=10)
 		
-	fig.suptitle("Count of Percent Matches")
-	fig.subplots_adjust(hspace=0.55)
+	fig.suptitle("Count of Percent Matches", fontsize=18)
+	fig.subplots_adjust(hspace=0.5)
 	fig.savefig('results.png')
 	plt.close(fig)
 	
