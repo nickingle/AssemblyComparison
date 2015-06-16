@@ -4,7 +4,10 @@ import string
 import re
 import numpy as np
 import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+
+plt.ioff()
 
 def createDict(sfile):
 	refLengths = ()
@@ -25,7 +28,6 @@ def createDict(sfile):
 	return LengthDict
 
 def plotGraph(d):
-	plt.ioff()
 	x = []
 	y = []
 	
@@ -39,6 +41,7 @@ def plotGraph(d):
 	plt.xlabel('Length of Velvet Sequence', fontsize = 20)
 	plt.xticks(fontsize = 15)
 	plt.savefig('Contigs_Mapped_SP.png')
+	
 
 if __name__ == "__main__":
 	input("Press Enter to display results...")
