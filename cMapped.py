@@ -6,9 +6,6 @@ import numpy as np
 import matplotlib
 import matplotlib as plt
 
-reference_id - returns index of reference sequence in the reference dictionary
-lengths - tuple of the lengths of the reference sequences(same order as the reference files)
-
 def createDict(sfile):
 	refLengths = ()
 	refLengths = refLengths + sfile.lengths
