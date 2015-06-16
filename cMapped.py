@@ -15,7 +15,7 @@ def createDict(sfile):
 	for readseg in sfile.fetch():
 		index = readseg.reference_id
 		lengthRef = refLengths[index] # returns the length of the corresponding reference seq that that the read maps to
-		if LengthDict.hasKey(lengthRef):
+		if LengthDict.has_key(lengthRef):
 			count = LengthDict[lengthRef]
 			LengthDict[lengthRef] = count + 1
 		else:
