@@ -4,7 +4,7 @@ import string
 import re
 import numpy as np
 import matplotlib
-import matplotlib as plt
+import matplotlib.pyplot as plt
 
 def createDict(sfile):
 	refLengths = ()
