@@ -25,6 +25,7 @@ def createDict(sfile):
 	return LengthDict
 
 def plotGraph(d):
+	plt.ioff()
 	x = []
 	y = []
 	
