@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+SKIP=0 # used for going to different parts of acomp [0: run entire program, 1: just run bowtie, 2: just run velvet minia comparision]
 KMER=21
 MINREAD=3
 PROCESSORS=1
@@ -13,12 +14,13 @@ DIRS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"    #where is the acomp 
 DIR=$( dirname ${DIRS} ) #go one level up from location of acomp file
 MAINFOLDER=$( echo "${DIR}" | sed -e "s/\/*$//" ) #remove trailing / if necessary
 
-while getopts "k:i:" option
+while getopts "k:i:c:" option
 do
 	case "${option}"
 		in
 		k) KMER=${OPTARG};; # user inputted change in kmer size used in minia assemler
 		i) REFILEO=${OPTARG};; # user inputted folder or file to run through acomp
+		c) SKIP=${OPTARG};;
 		?/ ) echo "ERROR: Unknown Option" exit 1;;
 	esac
 done
@@ -54,9 +56,9 @@ for FILE in "${REFFILES[@]}"; do
  	echo ==== Done Simulating Reads ====
 '
 
-'
+if ["$SKIP" -eq 0]; then
 # Build contigs using velvet
-for FILE in "${REFFILES[@]}"; do
+	for FILE in "${REFFILES[@]}"; do
 		FNAME=$( echo $(basename "${FILE}") ) # file name including extension
 		NAME=$( echo $(basename "${FILE}" ".${FORMAT}") ) # file name w/o extension
 		VELVETF=$( echo "${VELVETFOLDER}"/"${NAME}") # velvet files with full path
@@ -70,7 +72,7 @@ for FILE in "${REFFILES[@]}"; do
 
 # Build sequences using minia
 #mkdir ${MAINFOLDER}/minia_output
-for FILE in "${REFFILES[@]}"; do
+	for FILE in "${REFFILES[@]}"; do
 		FNAME=$( echo $(basename "${FILE}") ) # file name including extension
 		NAME=$( echo $(basename "${FILE}" ".${FORMAT}") ) # file name w/o extension
 		MINIAF=$( echo "${MINIAFOLDER}"/"${NAME}") # minia files with full path without extention
@@ -84,7 +86,7 @@ for FILE in "${REFFILES[@]}"; do
 	echo === Finished Minia Assembly ===
 	
 #Run Bowtie-build and bowtie aligner on minia and velvet outputs
-for FILE in "${REFFILES[@]}"; do
+	for FILE in "${REFFILES[@]}"; do
 			FNAME=$( echo $(basename "${FILE}") ) # file name including extension
 			NAME=$( echo $(basename "${FILE}" ".${FORMAT}") ) # file name w/o extension
 			MINIAF=$( echo "${MINIAFOLDER}"/"${FNAME}") # path to minia output for $FILE
@@ -122,7 +124,7 @@ for FILE in "${REFFILES[@]}"; do
 		done
 		echo 
 		echo ==== Finished aligning ${COUNT} sets of files using bowtie ====
-'
+
 
 # Run main.py on bowtie samfile outputs
 echo
@@ -162,3 +164,14 @@ echo "${MAIN_INPUT}"
 		echo === Finished running comparison of Minia and Velvet =====
 			
 echo ==== DONE ====
+fi
+
+if ["$SKIP" -eq 2 ]; then
+	
+	FILES_IN=$( echo "${SAMFOLDER}"/"reads3_miniaToVelvet.sam" )
+	python $( echo ${DIR}/cMapped.py ) $( echo "${FILES_IN}" )
+	echo ==== Finished Running Map Graphs of minia to velvet comparison =====
+fi
+echo ====== DONE ======
+
+	
