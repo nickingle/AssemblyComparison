@@ -46,7 +46,7 @@ def plotGraph(d1,d2):
 	x = d2.keys()
 	y = d2.values()
 	
-	plt.plot([float(v) for v in x)],[float(k) for k in y], '.')
+	plt.plot([float(v) for v in x],[float(k) for k in y], '.')
 	plt.title('# of Velvet Contigs Mapped to Minia Refs', fontsize = 20)
 	plt.ylabel('# of Velvet Contigs Mapped to Reference Seq', fontsize = 13)
 	plt.yticks(fontsize = 15)
