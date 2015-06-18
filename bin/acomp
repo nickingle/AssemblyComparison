@@ -168,8 +168,9 @@ fi
 
 if [ "$SKIP" -eq 2 ]; then
 	
-	FILES_IN=$( echo "${SAMFOLDER}"/"reads3_miniaToVelvet.sam" )
+	FILES_IN=$( echo "${SAMFOLDER}"/"reads3_miniaToVelvet.sam ${SAMFOLDER}"/"reads3_velvetToMinia.sam" )
 	python $( echo ${DIR}/cMapped.py ) $( echo "${FILES_IN}" )
+	echo
 	echo ==== Finished Running Map Graphs of minia to velvet comparison =====
 fi
 echo ====== DONE ======
