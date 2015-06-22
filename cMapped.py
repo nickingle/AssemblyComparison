@@ -39,7 +39,6 @@ def plotGraphs(mList, names, n):
 		x = np.array(list(d.keys()))
 		y = np.array(list(d.values()))
 		
-		print(k)
 		axes[k,0].plot(x, y, '.')
 		gName = list(names)[k]
 		title = '{0} : Minia Contigs mapped to Velvet'.format(gName)
@@ -58,7 +57,7 @@ def plotGraphs(mList, names, n):
 	
 	fig.suptitle("Number of Contigs Mapped to Reference Sequences by Length", fontsize=18)
 	fig.savefig('Contigs_Mapped.png')
-	fig.tight_layout()
+	plt.tight_layout()
 	plt.close(fig)
 	
 	
