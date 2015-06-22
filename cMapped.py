@@ -38,7 +38,7 @@ def plotGraphs(mList, names, n):
 		d = list(mList)[y] # get dictionary from list to map
 		x = d.keys()
 		y = d.values()
-		axes[y,0].plot([int(v) for v in x], [int(k) for k in y], '.')
+		axes[y,0].plot(x, y, '.')
 		gName = list(names)[y]
 		title = '{0} : Minia Contigs mapped to Velvet'.format(gName)
 		axes[y,0].set_title(title, fontsize=14)
@@ -48,7 +48,7 @@ def plotGraphs(mList, names, n):
 		d = list(mList)[y+1]
 		x = d.keys()
 		y = d.values()
-		axes[y,1].plot([int(v) for v in x], [int(k) for k in y], '.')
+		axes[y,1].plot(x, y, '.')
 		gName = list(names)[y]
 		title = '{0} : Minia Contigs mapped to Velvet'.format(gName)
 		axes[y,1].set_title(title, fontsize=14)
