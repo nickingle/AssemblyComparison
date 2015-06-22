@@ -50,7 +50,6 @@ def plotGraphs(mList, names, n):
 		x = np.array(list(d.keys()))
 		y = np.array(list(d.values()))
 		axes[k,1].plot(x, y, '.')
-		gName = list(names)[k]
 		title = '{0} : Minia Contigs mapped to Velvet'.format(gName)
 		axes[k,1].set_title(title, fontsize=14)
 		axes[k,1].set_xlabel('# of Minia Contigs Mapped to Reference Seq', fontsize=10)
