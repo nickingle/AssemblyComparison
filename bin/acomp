@@ -69,7 +69,9 @@ if [ "$SKIP" -eq 0 ]; then
 		velvetg "${VELVETF}" -exp_cov auto -cov_cutoff auto # run velvet assembler
 	done
 	echo ==== Finished Velvet Assembly ===
+fi
 
+if [ "$SKIP" -le 1]; then
 # Build sequences using minia
 #mkdir ${MAINFOLDER}/minia_output
 	for FILE in "${REFFILES[@]}"; do
@@ -84,7 +86,9 @@ if [ "$SKIP" -eq 0 ]; then
 	done
 	
 	echo === Finished Minia Assembly ===
-	
+fi
+
+if [ "$SKIP" -le 2 ]; then	
 #Run Bowtie-build and bowtie aligner on minia and velvet outputs
 	for FILE in "${REFFILES[@]}"; do
 			FNAME=$( echo $(basename "${FILE}") ) # file name including extension
@@ -124,15 +128,18 @@ if [ "$SKIP" -eq 0 ]; then
 		done
 		echo 
 		echo ==== Finished aligning ${COUNT} sets of files using bowtie ====
+fi
 
-
+if [ "$SKIP" -le 4 ]; then
 # Run main.py on bowtie samfile outputs
 echo
 echo
 echo ==== Running Graph Comparison on SamFiles ====
 echo
-# MAIN_INPUT=$( echo $COUNT ) #Commented out for testing
-MAIN_INPUT=2
+
+# MAIN_INPUT=$( echo $COUNT ) 
+MAIN_INPUT=2 # for testing purposes only
+
 for FILE in "${REFFILES[@]}"; do
 			FNAME=$( echo $(basename "${FILE}") ) # file name including extension
 			NAME=$( echo $(basename "${FILE}" ".${FORMAT}") ) # file name w/o extension
@@ -147,32 +154,29 @@ for FILE in "${REFFILES[@]}"; do
 			MAIN_INPUT+=$( echo "${NAME}" )
 		done
 
-echo "${MAIN_INPUT}"
+# echo "${MAIN_INPUT}" # testing purpose 
+	if[ "$SKIP" -le 3 ]; then
+		# Run main.py on MAIN_INPUT
+		python $( echo ${DIR}/main.py ) $( echo "${MAIN_INPUT}" )
+		echo ==== Finished running main.py ===========
+		echo ==== Graph(s) were saved to Percent_Match.png ======
+		echo
+	fi
 	
-	# Run main.py on MAIN_INPUT
-	python $( echo ${DIR}/main.py ) $( echo "${MAIN_INPUT}" )
+	if[ "$SKIP" -le 4 ]; then
+		python $( echo ${DIR}/cMapped.py ) $( echo "${MAIN_INPUT}" )
 			
 			#Run main.py and read in sam file output of bowtie
 			# python ${DIR}/main.py $( echo "${SAMFOLDER}"/"${NAME}_miniaToVelvet.sam" ) 
 			# python ${DIR}/main.py $( echo "${SAMFOLDER}"/"${NAME}_velvetToMinia.sam" )
-			
-			#NOTE: will probably modify main.py to take in a list of sam files and 
-			#      have it ouput a grid of the different samfile graphs for easy viewing.
-			#      Currently, it will ouput one graph at a time and if it is already 
-			#      running in the background the graph will not be visible.
-		
-		echo === Finished running comparison of Minia and Velvet =====
-			
+		echo ======= Finished running cMapped.py ======
+		echo ======= Graph(s) were saved to Contigs_Mapped.png =====
+		echo
+	fi
+fi			
 echo ==== DONE ====
-fi
 
-if [ "$SKIP" -eq 2 ]; then
-	
-	FILES_IN=$( echo "${SAMFOLDER}"/"reads3_miniaToVelvet.sam ${SAMFOLDER}"/"reads3_velvetToMinia.sam" )
-	python $( echo ${DIR}/cMapped.py ) $( echo "${FILES_IN}" )
-	echo
-	echo ==== Finished Running Map Graphs of minia to velvet comparison =====
-fi
-echo ====== DONE ======
+
+
 
 	

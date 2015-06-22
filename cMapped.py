@@ -27,10 +27,40 @@ def createDict(sfile):
 	
 	return LengthDict
 
-def plotGraph(d1,d2):
+def plotGraphs(mList, names, n):
 	x = []
 	y = []
+	axlist = list(names)
+	num = int(n/2)
+	fig, axes = plt.subplots(nrows=num, ncols=2)
 	
+	for y in range(0, num):
+		d = list(mList)[y] # get dictionary from list to map
+		x = d.keys()
+		y = d.values()
+		axes[y,0].plot([float(v) for v in x],[float(k) for k in y], '.')
+		gName = list(names)[y]
+		title = '{0} : Minia Contigs mapped to Velvet'.format(gName)
+		axes[y,0].set_title(title, fontsize=14)
+		axes[y,0].set_xlabel('# of Minia Contigs Mapped to Reference Seq', fontsize=10)
+		axes[y,0].set_ylabel('Length of Velvet Sequence', fontsize=10)
+		
+		d = list(mList)[y+1]
+		x = d.keys()
+		y = d.values()
+		axes[y,1].plot([float(v) for v in x],[float(k) for k in y], '.')
+		gName = list(names)[y]
+		title = '{0} : Minia Contigs mapped to Velvet'.format(gName)
+		axes[y,1].set_title(title, fontsize=14)
+		axes[y,1].set_xlabel('# of Minia Contigs Mapped to Reference Seq', fontsize=10)
+		axes[y,1].set_ylabel('Length of Velvet Sequence', fontsize=10)
+	
+	fig.suptitle("Number of Contigs Mapped to Reference Sequences by Length", fontsize=18)
+	fig.savefig('Contigs_Mapped.png')
+	plt.close(fig)
+	
+	
+'''	
 	x = d1.keys()
 	y = d1.values()
 	
@@ -53,9 +83,34 @@ def plotGraph(d1,d2):
 	plt.xlabel('Length of Minia Sequence', fontsize = 15)
 	plt.xticks(fontsize = 15)
 	plt.savefig('Contigs_Mapped_VtoM.png')
-	
+'''	
 
-if __name__ == "__main__":
+if __name__ == "__main__":	
+	###### From main.py for taking in multiple input files
+	n = int(sys.argv[1])
+	cm_array = []
+	inputnum = 3*n
+	numOfFiles = n*2
+	counter = 0
+	samfilelist = list()
+	cmList = list()
+	names = list()
+	
+	for x in range(2,(inputnum+2)):
+		counter += 1
+		if counter == 3:
+			names.append(str(sys.argv[x]))
+			counter = 0
+		else:
+			samfile = pysam.AlignmentFile(str(sys.argv[x]), "r")
+			samfilelist.append(samfile) # [x-2-numOfnames] is location of 
+			d = createDict(samfile)
+			cmList.append(d)
+			samfile.close()
+	numOfFilesI = int(numOfFiles)		
+	plotGraphs(cmList, names, numOfFiles)
+	
+'''	
 	input("Press Enter to display results...")
 	samfile1 = pysam.AlignmentFile(sys.argv[1], "r")
 	samfile2 = pysam.AlignmentFile(sys.argv[2], "r")
@@ -63,11 +118,8 @@ if __name__ == "__main__":
 	d2 = createDict(samfile2)
 	samfile1.close()
 	samfile2.close()
-	plotGraph(d1,d2)
-	
-	
-	
-	
+	plotGraph(d1,d2)	
+'''	
 	
 				
 		

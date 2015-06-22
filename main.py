@@ -231,7 +231,7 @@ def graphAllPMs(pmList, names, n):
 		
 	fig.suptitle("Count of Percent Matches", fontsize=18)
 	fig.subplots_adjust(hspace=0.5)
-	fig.savefig('results.png')
+	fig.savefig('Percent_Match.png')
 	plt.close(fig)
 	
 	
@@ -317,14 +317,6 @@ if __name__ == "__main__":
 # Finished createPercent Match array to build histogram graph to show coverage
 # percentages
 	
-'''
-cseries = createCigSeries(cig_dict)
-mdseries, num = createMDSeries(md_dict)
-
-mdseries.plot(title = "MD Tag Percent Match")
-cseries.plot(title = "Cigar String Percent Match")
-plt.show()
-'''	
 	
 	
 	
