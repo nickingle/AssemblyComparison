@@ -155,14 +155,14 @@ for FILE in "${REFFILES[@]}"; do
 		done
 
 # echo "${MAIN_INPUT}" # testing purpose 
-	if[ "$SKIP" -le 3 ]; then
+	if [ "$SKIP" -le 3 ]; then
 		python $( echo ${DIR}/main.py ) $( echo "${MAIN_INPUT}" ) # Run main.py on MAIN_INPUT
 		echo ==== Finished running main.py ===========
 		echo ==== Graph(s) were saved to Percent_Match.png ======
 		echo
 	fi
 	
-	if[ "$SKIP" -le 4 ]; then
+	if [ "$SKIP" -le 4 ]; then
 		python $( echo ${DIR}/cMapped.py ) $( echo "${MAIN_INPUT}" ) # Run cMapped.py on MAIN_INPUT
 			
 			#Run main.py and read in sam file output of bowtie
