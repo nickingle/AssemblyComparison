@@ -36,8 +36,9 @@ def plotGraphs(mList, names, n):
 	
 	for k in range(0, num):
 		d = list(mList)[k] # get dictionary from list to map
-		x = d.keys()
-		y = d.values()
+		x = np.array(list(d.keys()))
+		y = np.array(list(d.values()))
+		
 		axes[k,0].plot(x, y, '.')
 		gName = list(names)[k]
 		title = '{0} : Minia Contigs mapped to Velvet'.format(gName)
@@ -46,8 +47,8 @@ def plotGraphs(mList, names, n):
 		axes[k,0].set_ylabel('Length of Velvet Sequence', fontsize=10)
 		
 		d = list(mList)[k+1]
-		x = d.keys()
-		y = d.values()
+		x = np.array(list(d.keys()))
+		y = np.array(list(d.values()))
 		axes[k,1].plot(x, y, '.')
 		gName = list(names)[k]
 		title = '{0} : Minia Contigs mapped to Velvet'.format(gName)
