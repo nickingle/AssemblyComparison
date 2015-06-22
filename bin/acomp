@@ -6,7 +6,6 @@ MINREAD=3
 PROCESSORS=1
 FORMAT=fasta # acomp was designed to run with fasta files:: it may give error if .fa is used instead
 MAINFOLDER=.
-REFILEO=.
 COUNT=0
 
 #Default locations
@@ -14,35 +13,26 @@ DIRS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"    #where is the acomp 
 DIR=$( dirname ${DIRS} ) #go one level up from location of acomp file
 MAINFOLDER=$( echo "${DIR}" | sed -e "s/\/*$//" ) #remove trailing / if necessary
 
-while getopts "k:i:c:" option
-do
-	case "${option}"
-		in
-		k) KMER=${OPTARG};; # user inputted change in kmer size used in minia assemler
-		i) REFILEO=${OPTARG};; # user inputted folder or file to run through acomp
-		c) SKIP=${OPTARG};;
-		?/ ) echo "ERROR: Unknown Option" exit 1;;
-	esac
-done
-shift $(($OPTIND - 1))
-
 MAINFOLDER=$( echo "${MAINFOLDER}" | sed -e "s/\/*$//" ) # Folder for velvet, minia, and bowtie outputs
 MINIAFOLDER=$( echo "${MAINFOLDER}"/miniaOutput ) # Folder specifically for minia outputs
 BOWTIEFOLDER=$( echo "${MAINFOLDER}"/bowtieOutput ) # Folder specifically for bowtie-build outputs
 SAMFOLDER=$( echo "${MAINFOLDER}"/samFiles ) # Folder specifically for bowtie sam file outputs 
 VELVETFOLDER=$( echo "${MAINFOLDER}"/velvetoutput ) # Folder specifically for velvet outputs
 
-if [ -d $REFILEO ]; then # if statement for identifying if user input is a directory(folder)
-	REFILEO=$( echo "${REFILEO}" | sed -e "s/\/*$//" )
-	REFFILES=( $( find "${REFILEO}" -name "*.${FORMAT}" ) ) # all FORMAT file paths as array
-	# echo directory found # Testing
-elif [ -a $REFILEO ]; then # if statement for identifying if user input is just a file
-	REFILEO=$( echo "${REFILEO}" | sed -e "s/\/*$//" )
-	REFFILES=( $( find "${REFILEO}" -name "*.${FORMAT}" ) ) # all FORMAT file paths as array
-	# echo File found #Testing 
-else 
-	REFFILES=( $( find "${MAINFOLDER}" -name "*.${FORMAT}" ) ) # if user input is invalid or empty acomp uses files in the MAINFOLDER
-fi
+
+while getopts "k:c:" option
+do
+	case "${option}"
+		in
+		k) KMER=${OPTARG};; # user inputted change in kmer size used in minia assemler
+		c) SKIP=${OPTARG};;
+		?/ ) echo "ERROR: Unknown Option" exit 1;;
+	esac
+done
+shift $(($OPTIND - 1))
+
+REFFILES=( $( find "${MAINFOLDER}" -name "*.${FORMAT}" ) ) # if user input is invalid or empty acomp uses files in the MAINFOLDER
+
 
 ' 
 #Until art_illumina is installed on hines keep this commented
