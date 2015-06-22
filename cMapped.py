@@ -42,8 +42,8 @@ def plotGraphs(mList, names, n):
 		axes[k,0].plot(x, y, '.')
 		gName = list(names)[k]
 		title = '{0} : Minia Contigs mapped to Velvet'.format(gName)
-		axes[k,0].set_title(title, fontsize=14)
-		axes[k,0].set_ylabel('# of Minia Contigs Mapped to Reference Seq', fontsize=10)
+		axes[k,0].set_title(title, fontsize=10)
+		axes[k,0].set_ylabel('# of Minia Contigs Mapped to Reference Seq', fontsize=5)
 		axes[k,0].set_xlabel('Length of Velvet Sequence', fontsize=10)
 		
 		d = list(mList)[k+1]
@@ -51,11 +51,11 @@ def plotGraphs(mList, names, n):
 		y = np.array(list(d.values()))
 		axes[k,1].plot(x, y, '.')
 		title = '{0} : Minia Contigs mapped to Velvet'.format(gName)
-		axes[k,1].set_title(title, fontsize=14)
-		axes[k,1].set_ylabel('# of Minia Contigs Mapped to Reference Seq', fontsize=10)
+		axes[k,1].set_title(title, fontsize=10)
+		axes[k,1].set_ylabel('# of Minia Contigs Mapped to Reference Seq', fontsize=5)
 		axes[k,1].set_xlabel('Length of Velvet Sequence', fontsize=10)
 	
-	fig.suptitle("Number of Contigs Mapped to Reference Sequences by Length", fontsize=18)
+	fig.suptitle("Number of Contigs Mapped to Reference Sequences by Length", fontsize=15)
 	plt.tight_layout()
 	fig.savefig('Contigs_Mapped.png')
 	plt.close(fig)
