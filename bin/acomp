@@ -154,7 +154,7 @@ for FILE in "${REFFILES[@]}"; do
 			MAIN_INPUT+=$( echo "${NAME}" )
 		done
 
-# echo "${MAIN_INPUT}" # testing purpose 
+	echo "${MAIN_INPUT}" # testing purpose 
 	if [ "$SKIP" -le 3 ]; then
 		python $( echo ${DIR}/main.py ) $( echo "${MAIN_INPUT}" ) # Run main.py on MAIN_INPUT
 		echo ==== Finished running main.py ===========
