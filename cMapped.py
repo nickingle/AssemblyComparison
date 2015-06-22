@@ -56,7 +56,7 @@ def plotGraphs(mList, names, n):
 		axes[k,1].set_xlabel('Length of Velvet Sequence', fontsize=10)
 	
 	fig.suptitle("Number of Contigs Mapped to Reference Sequences by Length", fontsize=15)
-	fig.subplots_adjust(top=0.9)
+	fig.subplots_adjust(top=0.001)
 	plt.tight_layout()
 	fig.savefig('Contigs_Mapped.png')
 	plt.close(fig)
