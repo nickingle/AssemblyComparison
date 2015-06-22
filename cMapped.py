@@ -34,7 +34,7 @@ def plotGraphs(mList, names, n):
 	num = int(n/2)
 	fig, axes = plt.subplots(nrows=num, ncols=2)
 	
-	for k in range(0, num):
+	for k in range(0, num-1):
 		d = list(mList)[k] # get dictionary from list to map
 		x = np.array(list(d.keys()))
 		y = np.array(list(d.values()))
