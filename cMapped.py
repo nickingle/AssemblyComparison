@@ -58,6 +58,7 @@ def plotGraphs(mList, names, n):
 	
 	fig.suptitle("Number of Contigs Mapped to Reference Sequences by Length", fontsize=18)
 	fig.savefig('Contigs_Mapped.png')
+	fig.tight_layout()
 	plt.close(fig)
 	
 	
