@@ -71,7 +71,7 @@ if [ "$SKIP" -eq 0 ]; then
 	echo ==== Finished Velvet Assembly ===
 fi
 
-if [ "$SKIP" -le 1]; then
+if [ "$SKIP" -le 1 ]; then
 # Build sequences using minia
 #mkdir ${MAINFOLDER}/minia_output
 	for FILE in "${REFFILES[@]}"; do
@@ -156,15 +156,14 @@ for FILE in "${REFFILES[@]}"; do
 
 # echo "${MAIN_INPUT}" # testing purpose 
 	if[ "$SKIP" -le 3 ]; then
-		# Run main.py on MAIN_INPUT
-		python $( echo ${DIR}/main.py ) $( echo "${MAIN_INPUT}" )
+		python $( echo ${DIR}/main.py ) $( echo "${MAIN_INPUT}" ) # Run main.py on MAIN_INPUT
 		echo ==== Finished running main.py ===========
 		echo ==== Graph(s) were saved to Percent_Match.png ======
 		echo
 	fi
 	
 	if[ "$SKIP" -le 4 ]; then
-		python $( echo ${DIR}/cMapped.py ) $( echo "${MAIN_INPUT}" )
+		python $( echo ${DIR}/cMapped.py ) $( echo "${MAIN_INPUT}" ) # Run cMapped.py on MAIN_INPUT
 			
 			#Run main.py and read in sam file output of bowtie
 			# python ${DIR}/main.py $( echo "${SAMFOLDER}"/"${NAME}_miniaToVelvet.sam" ) 
