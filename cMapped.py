@@ -34,7 +34,7 @@ def plotGraphs(mList, names, n):
 	num = int(n/2)
 	fig, axes = plt.subplots(nrows=num, ncols=2)
 	
-	for k in range(0, num-1):
+	for k in range(0, num):
 		d = list(mList)[k] # get dictionary from list to map
 		x = np.array(list(d.keys()))
 		y = np.array(list(d.values()))
@@ -43,8 +43,8 @@ def plotGraphs(mList, names, n):
 		gName = list(names)[k]
 		title = '{0} : Minia Contigs mapped to Velvet'.format(gName)
 		axes[k,0].set_title(title, fontsize=14)
-		axes[k,0].set_xlabel('# of Minia Contigs Mapped to Reference Seq', fontsize=10)
-		axes[k,0].set_ylabel('Length of Velvet Sequence', fontsize=10)
+		axes[k,0].set_ylabel('# of Minia Contigs Mapped to Reference Seq', fontsize=10)
+		axes[k,0].set_xlabel('Length of Velvet Sequence', fontsize=10)
 		
 		d = list(mList)[k+1]
 		x = np.array(list(d.keys()))
@@ -52,8 +52,8 @@ def plotGraphs(mList, names, n):
 		axes[k,1].plot(x, y, '.')
 		title = '{0} : Minia Contigs mapped to Velvet'.format(gName)
 		axes[k,1].set_title(title, fontsize=14)
-		axes[k,1].set_xlabel('# of Minia Contigs Mapped to Reference Seq', fontsize=10)
-		axes[k,1].set_ylabel('Length of Velvet Sequence', fontsize=10)
+		axes[k,1].set_ylabel('# of Minia Contigs Mapped to Reference Seq', fontsize=10)
+		axes[k,1].set_xlabel('Length of Velvet Sequence', fontsize=10)
 	
 	fig.suptitle("Number of Contigs Mapped to Reference Sequences by Length", fontsize=18)
 	fig.savefig('Contigs_Mapped.png')
