@@ -158,7 +158,7 @@ for FILE in "${REFFILES[@]}"; do
 	if [ "$SKIP" -le 3 ]; then
 		python $( echo ${DIR}/main.py ) $( echo "${MAIN_INPUT}" ) # Run main.py on MAIN_INPUT
 		echo ==== Finished running main.py ===========
-		echo ==== Graph(s) were saved to Percent_Match.png ======
+		echo ==== Graphs were saved to Percent_Match.png ======
 		echo
 	fi
 	
@@ -169,7 +169,7 @@ for FILE in "${REFFILES[@]}"; do
 			# python ${DIR}/main.py $( echo "${SAMFOLDER}"/"${NAME}_miniaToVelvet.sam" ) 
 			# python ${DIR}/main.py $( echo "${SAMFOLDER}"/"${NAME}_velvetToMinia.sam" )
 		echo ======= Finished running cMapped.py ======
-		echo ======= Graph(s) were saved to Contigs_Mapped.png =====
+		echo ======= Graphs were saved to Contigs_Mapped.png =====
 		echo
 	fi
 fi			
