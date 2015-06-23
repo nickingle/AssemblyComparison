@@ -13,10 +13,12 @@ def createDict(sfile):
 	refLengths = ()
 	refLengths = refLengths + sfile.lengths
 	umCount = 0
+	totalC  = 0
 	
 	LengthDict = {}
 	
 	for readseg in sfile.fetch():
+		totalC = totalC + 1
 		index = readseg.reference_id
 		if index == int(-1):
 			umCount = umCount + 1
@@ -28,6 +30,7 @@ def createDict(sfile):
 			count = 1
 			LengthDict[lengthRef] = count
 	print('umCount: {0}'.format(str(umCount)))
+	print('totalC: {0}'.format(str(totalC)))
 	return LengthDict
 	
 def getOutliers(d):
