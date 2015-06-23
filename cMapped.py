@@ -16,6 +16,7 @@ def createDict(sfile):
 	LengthDict = {}
 	
 	for readseg in sfile.fetch():
+		print('In For loop')
 		index = readseg.reference_id
 		lengthRef = refLengths[index] # returns the length of the corresponding reference seq that that the read maps to
 		if lengthRef in LengthDict:
