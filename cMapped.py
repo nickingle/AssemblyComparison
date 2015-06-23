@@ -12,10 +12,15 @@ plt.ioff()
 def createDict(sfile):
 	refLengths = ()
 	refLengths = refLengths + sfile.lengths
+	sumOfLength = 0
 	umCount = 0
 	totalC  = 0
 	tuplelength = len(refLengths)
-	print('Length of length tuple: {0}'.format(str(tuplelength)))  
+	print('Length of length tuple: {0}'.format(str(tuplelength)))
+	
+	for l in refLength:
+		sumOfLength = sumOfLength + refLengths[l]  
+	print('Sum of the Lengths: {0}'.format(str(sumOfLength)))
 	
 	LengthDict = {}
 	
