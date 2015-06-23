@@ -12,12 +12,15 @@ plt.ioff()
 def createDict(sfile):
 	refLengths = ()
 	refLengths = refLengths + sfile.lengths
+	umCount = 0
+	umRead = sfile.unmapped
 	
 	LengthDict = {}
 	
 	for readseg in sfile.fetch():
 		index = readseg.reference_id
-		print('Index: {0}'.format(str(index)))
+		if index == int(-1):
+			umCount = umCount + 1
 		lengthRef = refLengths[index] # returns the length of the corresponding reference seq that that the read maps to
 		if lengthRef in LengthDict:
 			count = LengthDict[lengthRef]
@@ -25,7 +28,8 @@ def createDict(sfile):
 		else:
 			count = 1
 			LengthDict[lengthRef] = count
-	
+	print('umCount: {0}'.format(str(umCount)))
+	print('unmapped: {0}'.format(str(umRead)))
 	return LengthDict
 	
 def getOutliers(d):
