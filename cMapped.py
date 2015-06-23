@@ -28,7 +28,6 @@ def createDict(sfile):
 	return LengthDict
 	
 def getOutliers(sfile):
-	print('Hit getOutliers Method!!!!!!!!')
 	refID = ()
 	refID = refID + sfile.references
 	refLengths = ()
@@ -38,12 +37,12 @@ def getOutliers(sfile):
 	
 	for readseg in sfile.fetch():
 		index = readseg.reference_id
+		print('Index: {0}'.format(index))
 		lengthRef = refID[index] # returns the length of the corresponding reference seq that that the read maps to
 		if lengthRef in LengthDict:
 			count = LengthDict[lengthRef]
 			LengthDict[lengthRef] = count + 1
-			if LengthDict[lengthRef] > 10:
-				print('Reference ID: {0}'.format(lengthRef))
+			# if LengthDict[lengthRef] > 10:
 		else:
 			count = 1
 			LengthDict[lengthRef] = count
