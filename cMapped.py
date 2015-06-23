@@ -14,6 +14,8 @@ def createDict(sfile):
 	refLengths = refLengths + sfile.lengths
 	umCount = 0
 	totalC  = 0
+	tuplelength = len(refLengths)
+	print('Length of length tuple: {0}'.format(str(tuplelength)))
 	
 	LengthDict = {}
 	
