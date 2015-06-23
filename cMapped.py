@@ -34,8 +34,6 @@ def getOutliers(d):
 	refID = ()
 	refID = refID + sfile.references
 	
-	for 
-	
 	LengthDict = {}
 	
 	for readseg in sfile.fetch():
