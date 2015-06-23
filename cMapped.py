@@ -46,7 +46,7 @@ def getOutliers(sfile):
 		else:
 			count = 1
 			LengthDict[lengthRef] = count
-	
+		print('Count: {0}'.format(count))
 
 def plotGraphs(mList, names, n):
 	x = []
