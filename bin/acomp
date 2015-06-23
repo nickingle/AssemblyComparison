@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+help() {
+	cat <<ENDLINE
+	
+	
+
+
+ENDLINE
+}
+
 SKIP=0 # used for going to different parts of acomp [0: run entire program, 1: just run bowtie, 2: just run velvet minia comparision]
 KMER=21
 MINREAD=3
@@ -46,7 +55,7 @@ for FILE in "${REFFILES[@]}"; do
  	echo ==== Done Simulating Reads ====
 '
 
-if [ "$SKIP" -eq 0 ]; then
+if [ "$SKIP" -le 4 ]; then
 # Build contigs using velvet
 	for FILE in "${REFFILES[@]}"; do
 		FNAME=$( echo $(basename "${FILE}") ) # file name including extension
@@ -61,7 +70,7 @@ if [ "$SKIP" -eq 0 ]; then
 	echo ==== Finished Velvet Assembly ===
 fi
 
-if [ "$SKIP" -le 1 ]; then
+if [ "$SKIP" -le 3 ]; then
 # Build sequences using minia
 #mkdir ${MAINFOLDER}/minia_output
 	for FILE in "${REFFILES[@]}"; do
@@ -120,7 +129,7 @@ if [ "$SKIP" -le 2 ]; then
 		echo ==== Finished aligning ${COUNT} sets of files using bowtie ====
 fi
 
-if [ "$SKIP" -le 4 ]; then
+if [ "$SKIP" -le 1 ]; then
 # Run main.py on bowtie samfile outputs
 echo
 echo
@@ -145,14 +154,14 @@ for FILE in "${REFFILES[@]}"; do
 		done
 
 	echo "${MAIN_INPUT}" # testing purpose 
-	if [ "$SKIP" -le 3 ]; then
+	if [ "$SKIP" -le 1 ]; then
 		python $( echo ${DIR}/main.py ) $( echo "${MAIN_INPUT}" ) # Run main.py on MAIN_INPUT
 		echo ==== Finished running main.py ===========
 		echo ==== Graphs were saved to Percent_Match.png ======
 		echo
 	fi
 	
-	if [ "$SKIP" -le 4 ]; then
+	if [ "$SKIP" -le 0 ]; then
 		python $( echo ${DIR}/cMapped.py ) $( echo "${MAIN_INPUT}" ) # Run cMapped.py on MAIN_INPUT
 			
 			#Run main.py and read in sam file output of bowtie
