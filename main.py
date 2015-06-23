@@ -218,13 +218,13 @@ def graphAllPMs(pmList, names, n):
 		pm = list(pmList)[y]
 		axes[y,0].hist(pm, range = (min(pm), 100))
 		name = list(names)[y]
-		title = '{0} : minia to velvet'.format(name)
+		title = '{0} : Velvet to Minia'.format(name)
 		axes[y,0].set_title(title, fontsize=14)
 		axes[y,0].set_xlabel('% coverage',fontsize=10)
 		axes[y,0].set_ylabel('# of contigs', fontsize=10)
 		pm = list(pmList)[y+1]
 		axes[y,1].hist(pm, range = (min(pm), 100))
-		title = '{0} : velvet to minia'.format(name)
+		title = '{0} : Minia to Velvet'.format(name)
 		axes[y,1].set_title(title, fontsize=14)
 		axes[y,1].set_xlabel('% coverage', fontsize=10)
 		axes[y,1].set_ylabel('# of contigs', fontsize=10)

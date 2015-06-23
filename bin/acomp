@@ -55,7 +55,7 @@ for FILE in "${REFFILES[@]}"; do
  	echo ==== Done Simulating Reads ====
 '
 
-if [ "$SKIP" -le 4 ]; then
+if (( "$SKIP" == "0" )) || (( "$SKIP" == "1" )); then
 # Build contigs using velvet
 	for FILE in "${REFFILES[@]}"; do
 		FNAME=$( echo $(basename "${FILE}") ) # file name including extension
@@ -70,7 +70,7 @@ if [ "$SKIP" -le 4 ]; then
 	echo ==== Finished Velvet Assembly ===
 fi
 
-if [ "$SKIP" -le 3 ]; then
+if (( "$SKIP" == "0" )) || (( "$SKIP" == "2" )); then
 # Build sequences using minia
 #mkdir ${MAINFOLDER}/minia_output
 	for FILE in "${REFFILES[@]}"; do
@@ -87,7 +87,7 @@ if [ "$SKIP" -le 3 ]; then
 	echo === Finished Minia Assembly ===
 fi
 
-if [ "$SKIP" -le 2 ]; then	
+if (( "$SKIP" == "0" )) || (( "$SKIP" == "3" )); then	
 #Run Bowtie-build and bowtie aligner on minia and velvet outputs
 	for FILE in "${REFFILES[@]}"; do
 			FNAME=$( echo $(basename "${FILE}") ) # file name including extension
@@ -129,7 +129,7 @@ if [ "$SKIP" -le 2 ]; then
 		echo ==== Finished aligning ${COUNT} sets of files using bowtie ====
 fi
 
-if [ "$SKIP" -le 1 ]; then
+if (( "$SKIP" == "0" )) || (( "$SKIP" == "4" )) || (( "$SKIP" == "5" )); then
 # Run main.py on bowtie samfile outputs
 echo
 echo
@@ -154,14 +154,14 @@ for FILE in "${REFFILES[@]}"; do
 		done
 
 	echo "${MAIN_INPUT}" # testing purpose 
-	if [ "$SKIP" -le 1 ]; then
+	if (( "$SKIP" == "0" )) || (( "$SKIP" == "4" )); then
 		python $( echo ${DIR}/main.py ) $( echo "${MAIN_INPUT}" ) # Run main.py on MAIN_INPUT
 		echo ==== Finished running main.py ===========
 		echo ==== Graphs were saved to Percent_Match.png ======
 		echo
 	fi
 	
-	if [ "$SKIP" -le 0 ]; then
+	if (( "$SKIP" == "0" )) || (( "$SKIP" == "5" )); then
 		python $( echo ${DIR}/cMapped.py ) $( echo "${MAIN_INPUT}" ) # Run cMapped.py on MAIN_INPUT
 			
 			#Run main.py and read in sam file output of bowtie

@@ -15,7 +15,7 @@ def createDict(sfile):
 	umCount = 0
 	totalC  = 0
 	tuplelength = len(refLengths)
-	print('Length of length tuple: {0}'.format(str(tuplelength)))
+	print('Length of length tuple: {0}'.format(str(tuplelength)))  
 	
 	LengthDict = {}
 	
@@ -70,8 +70,8 @@ def plotGraphs(mList, names, n):
 		gName = list(names)[k]
 		title = '{0} : Minia Contigs mapped to Velvet'.format(gName)
 		axes[k,0].set_title(title, fontsize=10)
-		axes[k,0].set_ylabel('# of Minia Contigs Mapped to Reference Seq', fontsize=7)
-		axes[k,0].set_xlabel('Length of Velvet Sequence', fontsize=10)
+		axes[k,0].set_ylabel('# of Velvet Contigs Mapped to Reference Seq', fontsize=7)
+		axes[k,0].set_xlabel('Length of Minia Sequence', fontsize=10)
 		
 		d = list(mList)[k+1]
 		x = np.array(list(d.keys()))
@@ -79,8 +79,8 @@ def plotGraphs(mList, names, n):
 		axes[k,1].plot(x, y, '.')
 		title = '{0} : Velvet Contigs mapped to Minia Sequences'.format(gName)
 		axes[k,1].set_title(title, fontsize=10)
-		axes[k,1].set_ylabel('# of Velvet Contigs Mapped to Reference Seq', fontsize=7)
-		axes[k,1].set_xlabel('Length of Minia Sequence', fontsize=10)
+		axes[k,1].set_ylabel('# of Minia Contigs Mapped to Reference Seq', fontsize=7)
+		axes[k,1].set_xlabel('Length of Velvet Sequence', fontsize=10)
 	
 	fig.subplots_adjust(top=2)
 	plt.tight_layout()
