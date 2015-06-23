@@ -37,7 +37,7 @@ def getOutliers(sfile):
 	
 	for readseg in sfile.fetch():
 		index = readseg.reference_id
-		print('Index: {0}'.format(index))
+		print('In For loop')
 		lengthRef = refID[index] # returns the length of the corresponding reference seq that that the read maps to
 		if lengthRef in LengthDict:
 			count = LengthDict[lengthRef]
