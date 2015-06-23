@@ -12,22 +12,19 @@ plt.ioff()
 def createDict(sfile):
 	refLengths = sfile.lengths
 	sumOfLength = 0
-	umCount = 0
-	totalC  = 0
+	contigCount  = 0
 	tuplelength = len(refLengths)
 	print('Length of length tuple: {0}'.format(str(tuplelength)))
 	
 	for l in refLengths:
 		sumOfLength = sumOfLength + int(l)  
-	print('Sum of the Lengths: {0}'.format(str(sumOfLength)))
+	print('Sum of the Reference Lengths: {0}'.format(str(sumOfLength)))
 	
 	LengthDict = {}
 	
 	for readseg in sfile.fetch():
-		totalC = totalC + 1
+		contigCount = contigCount + 1
 		index = readseg.reference_id
-		if index == int(-1):
-			umCount = umCount + 1
 		lengthRef = refLengths[index] # returns the length of the corresponding reference seq that that the read maps to
 		if lengthRef in LengthDict:
 			count = LengthDict[lengthRef]
@@ -35,8 +32,8 @@ def createDict(sfile):
 		else:
 			count = 1
 			LengthDict[lengthRef] = count
-	print('umCount: {0}'.format(str(umCount)))
-	print('totalC: {0}'.format(str(totalC)))
+			
+	print('Contig Count: {0}'.format(str(contigCount)))
 	return LengthDict
 	
 def getOutliers(d):
