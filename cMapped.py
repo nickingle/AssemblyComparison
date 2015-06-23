@@ -42,11 +42,10 @@ def getOutliers(sfile):
 			count = LengthDict[lengthRef]
 			LengthDict[lengthRef] = count + 1
 			if LengthDict[lengthRef] > 10:
-				print(lengthRef)
+				print('Reference ID: {0}'.format(lengthRef))
 		else:
 			count = 1
 			LengthDict[lengthRef] = count
-		print(count)
 	
 
 def plotGraphs(mList, names, n):
@@ -80,6 +79,7 @@ def plotGraphs(mList, names, n):
 	fig.subplots_adjust(top=2)
 	plt.tight_layout()
 	fig.savefig('Contigs_Mapped.png')
+	print('Saved figure to Contigs_Mapped.png')
 	plt.close(fig)
 	
 
