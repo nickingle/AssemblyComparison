@@ -105,6 +105,7 @@ if __name__ == "__main__":
 		if counter == 3:
 			names.append(str(sys.argv[x]))
 			counter = 0
+			print('Name: {0}'.format(str(sys.argv[x])))
 		else:
 			samfile = pysam.AlignmentFile(str(sys.argv[x]), "r")
 			samfilelist.append(samfile) # [x-2-numOfnames] is location of 
