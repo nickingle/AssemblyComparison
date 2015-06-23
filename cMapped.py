@@ -13,7 +13,6 @@ def createDict(sfile):
 	refLengths = ()
 	refLengths = refLengths + sfile.lengths
 	umCount = 0
-	umRead = sfile.unmapped
 	
 	LengthDict = {}
 	
@@ -29,7 +28,6 @@ def createDict(sfile):
 			count = 1
 			LengthDict[lengthRef] = count
 	print('umCount: {0}'.format(str(umCount)))
-	print('unmapped: {0}'.format(str(umRead)))
 	return LengthDict
 	
 def getOutliers(d):
