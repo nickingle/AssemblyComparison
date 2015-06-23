@@ -28,6 +28,7 @@ def createDict(sfile):
 	return LengthDict
 	
 def getOutliers(sfile):
+	print('Hit getOutliers Method!!!!!!!!')
 	refID = ()
 	refID = refID + sfile.references
 	refLengths = ()
