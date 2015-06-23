@@ -10,8 +10,7 @@ import matplotlib.pyplot as plt
 plt.ioff()
 
 def createDict(sfile):
-	refLengths = ()
-	refLengths = refLengths + sfile.lengths
+	refLengths = sfile.lengths
 	sumOfLength = 0
 	umCount = 0
 	totalC  = 0
@@ -19,7 +18,7 @@ def createDict(sfile):
 	print('Length of length tuple: {0}'.format(str(tuplelength)))
 	
 	for l in refLengths:
-		sumOfLength = sumOfLength + refLengths[l]  
+		sumOfLength = sumOfLength + int(refLengths[l])  
 	print('Sum of the Lengths: {0}'.format(str(sumOfLength)))
 	
 	LengthDict = {}
