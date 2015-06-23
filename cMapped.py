@@ -18,7 +18,7 @@ def createDict(sfile):
 	print('Length of length tuple: {0}'.format(str(tuplelength)))
 	
 	for l in refLengths:
-		sumOfLength = sumOfLength + int(refLengths[l])  
+		sumOfLength = sumOfLength + int(l)  
 	print('Sum of the Lengths: {0}'.format(str(sumOfLength)))
 	
 	LengthDict = {}
