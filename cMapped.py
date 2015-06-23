@@ -16,23 +16,25 @@ def createDict(sfile):
 	LengthDict = {}
 	
 	for readseg in sfile.fetch():
-		print('In For loop')
 		index = readseg.reference_id
 		lengthRef = refLengths[index] # returns the length of the corresponding reference seq that that the read maps to
 		if lengthRef in LengthDict:
 			count = LengthDict[lengthRef]
 			LengthDict[lengthRef] = count + 1
+			if count > 10:
+				rname = sfile.getrname(index)
+				print('Reference ID: {0}'.format(str(rname)))
 		else:
 			count = 1
 			LengthDict[lengthRef] = count
 	
 	return LengthDict
 	
-def getOutliers(sfile):
+def getOutliers(d):
 	refID = ()
 	refID = refID + sfile.references
-	refLengths = ()
-	refLengths = refLengths + sfile.lengths
+	
+	for 
 	
 	LengthDict = {}
 	
@@ -104,7 +106,6 @@ if __name__ == "__main__":
 			samfile = pysam.AlignmentFile(str(sys.argv[x]), "r")
 			samfilelist.append(samfile) # [x-2-numOfnames] is location of 
 			d = createDict(samfile)
-			getOutliers(samfile)
 			cmList.append(d)
 			samfile.close()
 	numOfFilesI = int(numOfFiles)		
