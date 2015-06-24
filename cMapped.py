@@ -107,6 +107,18 @@ if __name__ == "__main__":
 	cmList = list()
 	names = list()
 	
+	print('||||||||||Info for [reads] Data|||||||||')
+	
+	for x in range(5, 7):
+		samfile = pysam.AlignmentFile(str(sys.argv[x]), "r")
+		if x == 5:
+			print('Minia Contigs to Velvet References')
+		else:
+			print('Velvet Contigs to Minia References')
+		d = createDict(samfile)
+		samfile.close()
+	
+	'''
 	for x in range(5,(inputnum+5)):
 		counter += 1
 		if counter == 3:
@@ -121,7 +133,7 @@ if __name__ == "__main__":
 			samfile.close()
 	numOfFilesI = int(numOfFiles)		
 	plotGraphs(cmList, names, numOfFiles)
-	
+	'''
 
 	
 				
