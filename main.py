@@ -286,6 +286,7 @@ if __name__ == "__main__":
 	inputnum = 3*n
 	numOfFiles = n*2
 	counter = 0
+	c = 0
 	samfilelist = list()
 	pmList = list()
 	names = list()
@@ -296,6 +297,8 @@ if __name__ == "__main__":
 			names.append(str(sys.argv[x]))
 			counter = 0
 		else:
+			c = c + 1
+			print('Count: {0}'.format(c))
 			samfile = pysam.AlignmentFile(str(sys.argv[x]), "r")
 			samfilelist.append(samfile) # [x-2-numOfnames] is location of 
 			md_dict, cig_dict = createDicts(samfile)
