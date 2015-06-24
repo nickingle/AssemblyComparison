@@ -213,8 +213,11 @@ def graphAllPMs(pmList, names, n):
 	axlist = list(names)
 	num = int(n/2)
 	fig, axes = plt.subplots(nrows=num, ncols=2)
+	c = 0
 
 	for y in range(0, num):
+		print('c: {0}'.format(str(c))
+		c = c + 1
 		pm = list(pmList)[y]
 		axes[y,0].hist(pm, range = (min(pm), 100))
 		name = list(names)[y]
@@ -286,7 +289,6 @@ if __name__ == "__main__":
 	inputnum = 3*n
 	numOfFiles = n*2
 	counter = 0
-	c = 0
 	samfilelist = list()
 	pmList = list()
 	names = list()
@@ -297,8 +299,6 @@ if __name__ == "__main__":
 			names.append(str(sys.argv[x]))
 			counter = 0
 		else:
-			c = c + 1
-			print('Count: {0}'.format(c))
 			samfile = pysam.AlignmentFile(str(sys.argv[x]), "r")
 			samfilelist.append(samfile) # [x-2-numOfnames] is location of 
 			md_dict, cig_dict = createDicts(samfile)
