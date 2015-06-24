@@ -304,8 +304,6 @@ if __name__ == "__main__":
 			samfile.close()
 	numOfFilesI = int(numOfFiles)		
 	graphAllPMs(pmList, names, numOfFiles)
-			# ready to test tomorrow. 
-			# need to update acomp to input files in
 			
 			
 #graphPM(pm_array)
