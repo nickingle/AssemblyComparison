@@ -11,6 +11,8 @@ plt.ioff()
 
 def createDict(sfile):
 	refLengths = sfile.lengths
+	refNames = sfile.references
+	refNameL = []
 	sumOfLength = 0
 	contigCount  = 0
 	tuplelength = len(refLengths)
@@ -25,6 +27,7 @@ def createDict(sfile):
 	for readseg in sfile.fetch():
 		contigCount = contigCount + 1
 		index = readseg.reference_id
+		refname = refNames[index]
 		lengthRef = refLengths[index] # returns the length of the corresponding reference seq that that the read maps to
 		if lengthRef in LengthDict:
 			count = LengthDict[lengthRef]
@@ -94,7 +97,8 @@ def plotGraphs(mList, names, n):
 
 if __name__ == "__main__":	
 	###### From main.py for taking in multiple input files
-	n = int(sys.argv[1])
+	# n = int(sys.argv[1])
+	n = 1
 	cm_array = []
 	inputnum = 3*n
 	numOfFiles = n*2
@@ -103,7 +107,7 @@ if __name__ == "__main__":
 	cmList = list()
 	names = list()
 	
-	for x in range(2,(inputnum+2)):
+	for x in range(5,(inputnum+5)):
 		counter += 1
 		if counter == 3:
 			names.append(str(sys.argv[x]))
