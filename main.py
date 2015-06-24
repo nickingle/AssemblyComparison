@@ -216,8 +216,8 @@ def graphAllPMs(pmList, names, n):
 	count = 0
 
 	for y in range(0, num):
-		print('c: {0}'.format(str(c))
-		count = count + 1
+		print('count: {0}'.format(str(c))
+		count += 1
 		pm = list(pmList)[y]
 		axes[y,0].hist(pm, range = (min(pm), 100))
 		name = list(names)[y]
