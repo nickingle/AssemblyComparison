@@ -213,11 +213,11 @@ def graphAllPMs(pmList, names, n):
 	axlist = list(names)
 	num = int(n/2)
 	fig, axes = plt.subplots(nrows=num, ncols=2)
-	c = 0
+	count = 0
 
 	for y in range(0, num):
 		print('c: {0}'.format(str(c))
-		c = c + 1
+		count = count + 1
 		pm = list(pmList)[y]
 		axes[y,0].hist(pm, range = (min(pm), 100))
 		name = list(names)[y]
