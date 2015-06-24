@@ -28,6 +28,11 @@ def createDict(sfile):
 		contigCount = contigCount + 1
 		index = readseg.reference_id
 		refname = refNames[index]
+		if refname in refNameL:
+			continue
+		else:
+			reNameL.append(refname)
+			print('refName: {0}'.format(str(refname)))
 		lengthRef = refLengths[index] # returns the length of the corresponding reference seq that that the read maps to
 		if lengthRef in LengthDict:
 			count = LengthDict[lengthRef]
