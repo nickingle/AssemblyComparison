@@ -195,7 +195,7 @@ def getPercentMatches(pma):
 	num = 0
 	
 	for m in pma:
-		if count.has_key(m):
+		if m in count:
 			num = count[m]
 			count[m] = num + 1
 		else:
