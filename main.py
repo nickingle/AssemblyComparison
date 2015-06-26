@@ -228,9 +228,9 @@ def getPercentMatches(pma):
 def printPercentMatches(d):
 	
 	print("% match : # of contigs")
-	for k, v in d.iteritems():
+	for v in d:
 		if v != 0:
-			print("[{0}%] : {1} contigs".format(k, v))
+			print("[{0}%] : {1} contigs".format(v, d[v]))
 
 def graphPM(pmList, name, n):
 	
