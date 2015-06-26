@@ -309,7 +309,7 @@ if __name__ == "__main__":
 	pmList = list()
 	names = list()
 	
-	for x in range(2,(inputnum+1)):
+	for x in range(2,(inputnum+2)):
 		counter += 1
 		if counter == 3:
 			names.append(str(sys.argv[x]))
