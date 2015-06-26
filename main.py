@@ -197,25 +197,25 @@ def getPercentMatches(pma):
 	for m in pma:
 		if m == 100:
 			count['100'] += 1
-		else if m >= 90 && m < 100:
+		elif m >= 90 && m < 100:
 			count['90'] += 1
-		else if m >= 80 && m < 90:
+		elif m >= 80 && m < 90:
 			count['80'] += 1
-		else if m >= 70 && m < 80:
+		elif m >= 70 && m < 80:
 			count['70'] += 1
-		else if m >= 60 && m < 70:
+		elif m >= 60 && m < 70:
 			count['60'] += 1
-		else if m >= 50 && m < 60:
+		elif m >= 50 && m < 60:
 			count['50'] += 1
-		else if m >= 40 && m < 50:
+		elif m >= 40 && m < 50:
 			count['40'] += 1
-		else if m >= 30 && m < 40:
+		elif m >= 30 && m < 40:
 			count['30'] += 1
-		else if m >= 20 &&  m < 30:
+		elif m >= 20 &&  m < 30:
 			count['20'] += 1
-		else if m >= 10 && m < 20:
+		elif m >= 10 && m < 20:
 			count['10'] += 1
-		else if m > 0 && m < 10:
+		elif m > 0 && m < 10:
 			count['1'] += 1
 		else:
 			count['0'] += 1
