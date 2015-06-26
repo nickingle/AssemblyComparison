@@ -205,14 +205,14 @@ def graphPM(pmList, name, n):
 	fig, (ax1, ax2) = plt.subplots(ncols=2)
 	
 	pm = list(pmList)[0]
-	ax1.hist(pm, range = (min(pma), 100))
+	ax1.hist(pm, range = (min(pm), 100))
 	title ='{0} : Velvet to Minia'.format(name)
 	ax1.set_title(title, fontsize=14)
 	ax1.set_xlabel('% coverage', fontsize=10)
 	ax1.set_ylabel('# of contigs', fontsize=10)
 	
 	pm = list(pmList)[1]
-	ax2.hist(pm, range = (min(pma), 100))
+	ax2.hist(pm, range = (min(pm), 100))
 	title ='{0} : Minia to Velvet'.format(name)
 	ax2.set_title(title, fontsize=14)
 	ax2.set_xlabel('% coverage', fontsize=10)
@@ -322,6 +322,7 @@ if __name__ == "__main__":
 			pmList.append(pm_array)
 			samfile.close()
 	numOfFilesI = int(numOfFiles)
+	print("Graphing Contigs % Match...")
 	graphPM(pmList, names, numOfFiles)		
 	# graphAllPMs(pmList, names, numOfFiles)
 			
