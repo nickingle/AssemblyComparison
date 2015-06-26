@@ -200,13 +200,29 @@ def printHighMatches(pma):
 			continue
 	# print "# of Alignments w/ a Match Percentage over 98 percent = ", count			
 
-def graphPM(pma):
-	printHighMatches(pma)
-	plt.hist(pma, range = (min(pma), 99))
-	plt.ylabel('# of Alignments')
-	plt.xlabel('Percent Match')
+def graphPM(pmList, name, n):
+	
+	fig, (ax1, ax2) = plt.subplots(ncols=2)
+	
+	pm = list(pmList)[0]
+	ax1.hist(pm, range = (min(pma), 100))
+	title ='{0} : Velvet to Minia'.format(name)
+	ax1.set_title(title, fontsize=14)
+	ax1.set_xlabel('% coverage', fontsize=10)
+	ax1.set_ylabel('# of contigs', fontsize=10)
+	
+	pm = list(pmList)[1]
+	ax2.hist(pm, range = (min(pma), 100))
+	title ='{0} : Minia to Velvet'.format(name)
+	ax2.set_title(title, fontsize=14)
+	ax2.set_xlabel('% coverage', fontsize=10)
+	ax2.set_ylabel('# of contigs', fontsize=10)
+	
 	plt.title('Count of Percent Matches')
-	plt.show()
+	fig.suptitle("Count of Percent Matches", fontsize=18)
+	fig.subplots_adjust(hspace=0.5)
+	fig.savefig('Percent_Match.png')
+	plt.close(fig)
 
 # Method for Printing out graphs for a list of samfiles	using matplotlib
 def graphAllPMs(pmList, names, n):
@@ -305,8 +321,9 @@ if __name__ == "__main__":
 			pm_array = createPMarray(cig_dict, md_dict)
 			pmList.append(pm_array)
 			samfile.close()
-	numOfFilesI = int(numOfFiles)		
-	graphAllPMs(pmList, names, numOfFiles)
+	numOfFilesI = int(numOfFiles)
+	graphPM(pmList, names, numOfFiles)		
+	# graphAllPMs(pmList, names, numOfFiles)
 			
 			
 #graphPM(pm_array)
