@@ -338,11 +338,11 @@ if __name__ == "__main__":
 	numOfFilesI = int(numOfFiles)
 	
 	print("{0} | Velvet to Minia Percent Matches".format(name))
-	d = getPercentMatches(pma[0])
+	d = getPercentMatches(pmList[0])
 	printPercentMatches(d)
 	print("\n")
 	print("{0} | Minia to Velvet Percent Matches".format(name))
-	d = getPercentMatches(pma[1])
+	d = getPercentMatches(pmList[1])
 	printPercentMatches(d)
 		
 	print("\n")
