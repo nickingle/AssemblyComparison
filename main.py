@@ -204,7 +204,7 @@ def getPercentMatches(pma):
 	
 	return count
 	
-def printPerecentMatches(d):
+def printPercentMatches(d):
 	
 	print("% match : # of contigs")
 	for m in d:
