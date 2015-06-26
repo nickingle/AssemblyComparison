@@ -191,16 +191,34 @@ def createPMarray(csd, mdd):
 	return pm_a
 
 def getPercentMatches(pma):
-	count = {}
+	count = {'100': 0, '90': 0, '80': 0, '70': 0, '60': 0, '50': 0, '40': 0, '30': 0, '20': 0, '10': 0, '1': 0, '0': 0}
 	num = 0
 	
 	for m in pma:
-		if m in count:
-			num = count[m]
-			count[m] = num + 1
+		if m == 100:
+			count['100'] += 1
+		else if m >= 90 && m < 100:
+			count['90'] += 1
+		else if m >= 80 && m < 90:
+			count['80'] += 1
+		else if m >= 70 && m < 80:
+			count['70'] += 1
+		else if m >= 60 && m < 70:
+			count['60'] += 1
+		else if m >= 50 && m < 60:
+			count['50'] += 1
+		else if m >= 40 && m < 50:
+			count['40'] += 1
+		else if m >= 30 && m < 40:
+			count['30'] += 1
+		else if m >= 20 &&  m < 30:
+			count['20'] += 1
+		else if m >= 10 && m < 20:
+			count['10'] += 1
+		else if m > 0 && m < 10:
+			count['1'] += 1
 		else:
-			num = 1
-			count[m] = num
+			count['0'] += 1
 	
 	return count
 	
@@ -208,8 +226,8 @@ def printPercentMatches(d):
 	
 	print("% match : # of contigs")
 	for m in d:
-		print("{0}% : {1} contigs".format(m, d[m]))
-			
+		if d[m] != 0:
+			print("[{0}%] : {1} contigs".format(m, d[m]))
 
 def graphPM(pmList, name, n):
 	
