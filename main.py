@@ -192,44 +192,45 @@ def createPMarray(csd, mdd):
 	return pm_a
 
 def getPercentMatches(pma):
-	count = {'100': 0, '90': 0, '80': 0, '70': 0, '60': 0, '50': 0, '40': 0, '30': 0, '20': 0, '10': 0, '1': 0, '0': 0}
+	count = {100: 0, 90: 0, 80: 0, 70: 0, 60: 0, 50: 0, 40: 0, 30: 0, 20: 0, 10: 0, 1: 0, 0: 0}
 	num = 0
+	temp = list()
 	
 	for m in pma:
 		if m == 100:
-			count['100'] += 1
+			count[100] += 1
 		elif  90 <= m < 100:
-			count['90'] += 1
+			count[90] += 1
 		elif  80 <= m < 90:
-			count['80'] += 1
+			count[80] += 1
 		elif 70 <= m < 80:
-			count['70'] += 1
+			count[70] += 1
 		elif 60 <= m < 70:
-			count['60'] += 1
+			count[60] += 1
 		elif 50 <= m < 60:
-			count['50'] += 1
+			count[50] += 1
 		elif 40 <= m < 50:
-			count['40'] += 1
+			count[40] += 1
 		elif 30 <= m < 40:
-			count['30'] += 1
+			count[30] += 1
 		elif 20 <= m < 30:
-			count['20'] += 1
+			count[20] += 1
 		elif 10 <= m < 20:
-			count['10'] += 1
+			count[10] += 1
 		elif 0 < m < 10:
-			count['1'] += 1
+			count[1] += 1
 		else:
-			count['0'] += 1
+			count[0] += 1
 			
-	temp = collections.OrderedDict(count)
+	temp = OrderDict(sorted(count.items()))
 	return temp
 	
 def printPercentMatches(d):
 	
 	print("% match : # of contigs")
-	for m in sorted(d):
-		if d[m] != 0:
-			print("[{0}%] : {1} contigs".format(m, d[m]))
+	for k, v in d.iteritems():
+		if v != 0:
+			print("[{0}%] : {1} contigs".format(k, v))
 
 def graphPM(pmList, name, n):
 	
