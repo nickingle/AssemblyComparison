@@ -218,14 +218,13 @@ def graphPM(pmList, name, n):
 	ax2.set_xlabel('% coverage', fontsize=10)
 	ax2.set_ylabel('# of contigs', fontsize=10)
 	
-	plt.title('Count of Percent Matches')
 	fig.suptitle("Count of Percent Matches", fontsize=18)
 	fig.subplots_adjust(hspace=0.5)
 	fig.savefig('Percent_Match.png')
 	plt.close(fig)
 
 # Method for Printing out graphs for a list of samfiles	using matplotlib
-def graphAllPMs(pmList, names, n):
+def graphAllPMs(pmList, name, n):
 	axlist = list(names)
 	num = int(n/2)
 	fig, axes = plt.subplots(nrows=num, ncols=2)
@@ -250,6 +249,7 @@ def graphAllPMs(pmList, names, n):
 		
 	fig.suptitle("Count of Percent Matches", fontsize=18)
 	fig.subplots_adjust(hspace=0.5)
+	plt.tight_layout()
 	fig.savefig('Percent_Match.png')
 	plt.close(fig)
 	
@@ -313,8 +313,10 @@ if __name__ == "__main__":
 		counter += 1
 		if counter == 3:
 			names.append(str(sys.argv[x]))
+			name = str(sys.argv[x])
 			counter = 0
 		else:
+			print("Analyzing samfiles..")
 			samfile = pysam.AlignmentFile(str(sys.argv[x]), "r")
 			samfilelist.append(samfile) # [x-2-numOfnames] is location of 
 			md_dict, cig_dict = createDicts(samfile)
@@ -323,7 +325,7 @@ if __name__ == "__main__":
 			samfile.close()
 	numOfFilesI = int(numOfFiles)
 	print("Graphing Contigs % Match...")
-	graphPM(pmList, names, numOfFiles)		
+	graphPM(pmList, name, numOfFiles)		
 	# graphAllPMs(pmList, names, numOfFiles)
 			
 			
