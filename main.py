@@ -190,15 +190,26 @@ def createPMarray(csd, mdd):
 	
 	return pm_a
 
-def printHighMatches(pma):
-	count = 0
+def getPercentMatches(pma):
+	count = {}
+	num = 0
 	
 	for m in pma:
-		if m >= 98:
-			count += 1
+		if count.has_key(m):
+			num = count[m]
+			count[m] = num + 1
 		else:
-			continue
-	# print "# of Alignments w/ a Match Percentage over 98 percent = ", count			
+			num = 1
+			count[m] = num
+	
+	return count
+	
+def printPerecentMatches(d):
+	
+	print("% match : # of contigs")
+	for m in d:
+		print("{0}% : {1} contigs".format(m, d[m]))
+			
 
 def graphPM(pmList, name, n):
 	
@@ -220,6 +231,7 @@ def graphPM(pmList, name, n):
 	
 	fig.suptitle("Count of Percent Matches", fontsize=18)
 	fig.subplots_adjust(hspace=0.5)
+	fig.subplots_adjust(wspace=0.5)
 	fig.savefig('Percent_Match.png')
 	plt.close(fig)
 
@@ -324,6 +336,16 @@ if __name__ == "__main__":
 			pmList.append(pm_array)
 			samfile.close()
 	numOfFilesI = int(numOfFiles)
+	
+	print("{0} | Velvet to Minia Percent Matches".format(name))
+	d = getPercentMatches(pma[0])
+	printPercentMatches(d)
+	print("\n")
+	print("{0} | Minia to Velvet Percent Matches".format(name))
+	d = getPercentMatches(pma[1])
+	printPercentMatches(d)
+		
+	print("\n")
 	print("Graphing Contigs % Match...")
 	graphPM(pmList, name, numOfFiles)		
 	# graphAllPMs(pmList, names, numOfFiles)
