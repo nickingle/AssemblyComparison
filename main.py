@@ -227,7 +227,7 @@ def getPercentMatches(pma):
 def printPercentMatches(d):
 	
 	print("% match : # of contigs")
-	for m in d:
+	for m in sorted(d):
 		if d[m] != 0:
 			print("[{0}%] : {1} contigs".format(m, d[m]))
 
