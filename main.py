@@ -222,7 +222,7 @@ def getPercentMatches(pma):
 		else:
 			count[0] += 1
 			
-	temp = OrderDict(sorted(count.items()))
+	temp = collections.OrderDict(sorted(count.items()))
 	return temp
 	
 def printPercentMatches(d):
