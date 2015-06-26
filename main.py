@@ -1,4 +1,5 @@
 import sys
+import collections
 import pysam
 import string
 import re
@@ -219,8 +220,9 @@ def getPercentMatches(pma):
 			count['1'] += 1
 		else:
 			count['0'] += 1
-	
-	return count
+			
+	temp = collections.OrderedDict(count)
+	return temp
 	
 def printPercentMatches(d):
 	
