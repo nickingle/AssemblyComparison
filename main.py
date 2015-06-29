@@ -20,7 +20,7 @@ def createDicts(sfile):
 	for readseg in sfile.fetch():
 		qname = readseg.qname
 		if readseg.is_duplicate:
-			count = count + 1
+			dupCount = dupCount + 1
 		try:
   			
 		except KeyError:
