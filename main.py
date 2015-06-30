@@ -17,10 +17,12 @@ def createDicts(sfile):
 	mm_d = {}
 	cs_d = {}
 	dupCount = 0
+	flag = false
+	
 	for readseg in sfile.fetch():
 		qname = readseg.qname
-		if readseg.is_duplicate:
-			dupCount = dupCount + 1
+		flag = readseg.is_duplicate
+	
 		try:
   			
 		except KeyError:
@@ -28,6 +30,8 @@ def createDicts(sfile):
 			continue
 		mm_d[qname] = md_string
 		
+		if flag:
+			dupCount = dupCount + 1
 		ct = readseg.cigartuples
 		cs_d[qname] = ct
 	
