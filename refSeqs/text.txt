@@ -1,0 +1,2 @@
+This folder is for placing refSeqs that have data simulated from them. The files in this folder will be compared to the assembled 
+genomes from velvet and minia.
