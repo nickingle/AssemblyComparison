@@ -16,11 +16,13 @@ plt.ioff()
 def createDicts(sfile):
 	mm_d = {}
 	cs_d = {}
+	dupCount = 0
 	for readseg in sfile.fetch():
 		qname = readseg.qname
+		if readseg.is_duplicate:
+			dupCount = dupCount + 1
 		try:
-			md_string = readseg.get_tag("MD")
-			
+  			
 		except KeyError:
 			md_string = "None"
 			continue
@@ -29,7 +31,7 @@ def createDicts(sfile):
 		ct = readseg.cigartuples
 		cs_d[qname] = ct
 	
-	return mm_d, cs_d
+	return mm_d, cs_d, dupCount
 
 # Method for breaking down MD tag by mismatches:
 # seperates(split) the string by the numbers of matched ntides (A decimal num) 
@@ -97,6 +99,40 @@ def calc_pi(cig):
 	pid = float(matches)/(float(matches)+float(skips)+float(insertions)+float(softclip)+float(hardclip))
 	
 	return pid
+	
+def cigBreak(cig):
+	# Break down Cigar String ########################### 
+	matches = 0
+	insertions = 0
+	deletions = 0
+	skips = 0
+	softclip = 0
+	hardclip = 0
+	padding = 0
+	seqmatch = 0
+	seqmismatch = 0
+	
+	for l in cig:
+		if l[0] == 0:
+			matches += l[1]
+		elif l[0] == 1:
+			insertions += l[1]
+		elif l[0] == 2:
+			deletions += l[1]
+		elif l[0] == 3:
+			skips += l[1]
+		elif l[0] == 4:
+			softclip += l[1]
+		elif l[0] == 5:
+			hardclip += l[1]
+		elif l[0] == 6:
+			padding += l[1]
+		elif l[0] == 7:
+			seqmatch += l[1]
+		elif l[0] == 8:			
+			seqmismatch += l[1]
+		else:
+			continue
 	
 # Method that calculates the Percent of the sequence that is matched and covered
 def calc_perMatch(cig, md):
@@ -232,6 +268,16 @@ def printPercentMatches(d):
 		if d[v] != 0:
 			print("[{0}%] : {1} contigs".format(v, d[v]))
 
+def dupCount(sfile):
+	count = 0
+	
+	for readseg in sfile.fetch():
+		if readseg.is_duplicate:
+			count = count + 1
+	
+	return count
+	
+
 def graphPM(pmList, name, n):
 	
 	fig, (ax1, ax2) = plt.subplots(ncols=2)
@@ -341,6 +387,8 @@ if __name__ == "__main__":
 	samfilelist = list()
 	pmList = list()
 	names = list()
+	dupList = list()
+	dup = 0
 	
 	for x in range(2,(inputnum+2)):
 		counter += 1
@@ -352,7 +400,8 @@ if __name__ == "__main__":
 			print("Analyzing samfiles..")
 			samfile = pysam.AlignmentFile(str(sys.argv[x]), "r")
 			samfilelist.append(samfile) # [x-2-numOfnames] is location of 
-			md_dict, cig_dict = createDicts(samfile)
+			md_dict, cig_dict, dup = createDicts(samfile)
+			dupList.append(dup)
 			pm_array = createPMarray(cig_dict, md_dict)
 			pmList.append(pm_array)
 			samfile.close()
@@ -361,10 +410,14 @@ if __name__ == "__main__":
 	print("{0} | Velvet to Minia Percent Matches".format(name))
 	d = getPercentMatches(pmList[0])
 	printPercentMatches(d)
+	dup = dupList[0]
+	print("{0} | Number of duplicates: {1}".format(name, dup))
 	print("\n")
 	print("{0} | Minia to Velvet Percent Matches".format(name))
 	d = getPercentMatches(pmList[1])
 	printPercentMatches(d)
+	dup = dupList[1]
+	print("{0} | Number of duplicates: {1}".format(name, dup))
 		
 	print("\n")
 	print("Graphing Contigs % Match...")
