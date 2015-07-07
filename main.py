@@ -16,18 +16,9 @@ plt.ioff()
 def createDicts(sfile):
 	mm_d = {}
 	cs_d = {}
-	dupCount = 0
-
-	for readseg in sfile.fetch():
-		qname = readseg.qname
-		if readseg.is_duplicate:
-			dupCount = dupCount + 1
-
-	flag = False
 	
 	for readseg in sfile.fetch():
 		qname = readseg.qname
-		flag = readseg.is_duplicate
 	
 		try:
   			continue
@@ -36,14 +27,23 @@ def createDicts(sfile):
 			continue
 			
 		mm_d[qname] = md_string
-		
-		if flag:
-			dupCount = dupCount + 1
 			
 		ct = readseg.cigartuples
 		cs_d[qname] = ct
 	
-	return mm_d, cs_d, dupCount
+	return mm_d, cs_d
+	
+def CountDup(samfile):
+	dupCount = 0
+	
+	for readseg in samfile.fetch():
+		if readseg.is_duplicate:
+			dupCount = dupCount + 1
+	
+	return dupCount
+	
+		
+	
 
 # Method for breaking down MD tag by mismatches:
 # seperates(split) the string by the numbers of matched ntides (A decimal num) 
@@ -412,10 +412,11 @@ if __name__ == "__main__":
 			print("Analyzing samfiles..")
 			samfile = pysam.AlignmentFile(str(sys.argv[x]), "r")
 			samfilelist.append(samfile) # [x-2-numOfnames] is location of 
-			md_dict, cig_dict, dup = createDicts(samfile)
-			dupList.append(dup)
+			md_dict, cig_dict = createDicts(samfile)
 			pm_array = createPMarray(cig_dict, md_dict)
 			pmList.append(pm_array)
+			dup = DupCount(samfile)
+			dupList.append(dup)
 			samfile.close()
 	numOfFilesI = int(numOfFiles)
 	
