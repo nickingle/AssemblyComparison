@@ -106,7 +106,9 @@ if __name__ == "__main__":
 			d = createDict(samfile)
 			cmList.append(d)
 			samfile.close()
-	numOfFilesI = int(numOfFiles)		
+	numOfFilesI = int(numOfFiles)
+	size = cmList.length
+	print("{0} items in the list".format(size))		
 	plotGraphs(cmList, names, numOfFiles)
 
 
