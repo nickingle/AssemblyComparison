@@ -30,10 +30,11 @@ def createDicts(sfile):
 		flag = readseg.is_duplicate
 	
 		try:
-  			
+  			print("")
 		except KeyError:
 			md_string = "None"
 			continue
+			
 		mm_d[qname] = md_string
 		
 		if flag:
