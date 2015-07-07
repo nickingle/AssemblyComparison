@@ -23,7 +23,7 @@ def createDicts(sfile):
 		if readseg.is_duplicate:
 			dupCount = dupCount + 1
 
-	flag = false
+	flag = False
 	
 	for readseg in sfile.fetch():
 		qname = readseg.qname
