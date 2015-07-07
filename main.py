@@ -30,7 +30,7 @@ def createDicts(sfile):
 		flag = readseg.is_duplicate
 	
 		try:
-  			print("")
+  			
 		except KeyError:
 			md_string = "None"
 			continue
@@ -39,6 +39,7 @@ def createDicts(sfile):
 		
 		if flag:
 			dupCount = dupCount + 1
+			
 		ct = readseg.cigartuples
 		cs_d[qname] = ct
 	
