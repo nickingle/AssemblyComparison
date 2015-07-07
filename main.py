@@ -21,7 +21,7 @@ def createDicts(sfile):
 		qname = readseg.qname
 	
 		try:
-  			continue
+			md_string = readseg.get_tag("MD")
 		except KeyError:
 			md_string = "None"
 			continue
@@ -411,7 +411,7 @@ if __name__ == "__main__":
 		else:
 			print("Analyzing samfiles..")
 			samfile = pysam.AlignmentFile(str(sys.argv[x]), "r")
-			samfilelist.append(samfile) # [x-2-numOfnames] is location of 
+			# samfilelist.append(samfile) # [x-2-numOfnames] is location of 
 			md_dict, cig_dict = createDicts(samfile)
 			pm_array = createPMarray(cig_dict, md_dict)
 			pmList.append(pm_array)
