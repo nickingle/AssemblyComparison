@@ -48,11 +48,11 @@ def plotGraphs(mList, names, n):
 	x = []
 	y = []
 	axlist = list(names)
-	#000num = int(n/2)
+	num = int(n/2)
 	count = 0
-	fig, axes = plt.subplots(nrows=n, ncols=2)
+	fig, axes = plt.subplots(nrows=num, ncols=2)
 	
-	for k in range(0, n):
+	for k in range(0, num):
 		d = list(mList)[count] # get dictionary from list to map
 		x = x.append(list(d.keys()))
 		y = y.append(list(d.values()))
