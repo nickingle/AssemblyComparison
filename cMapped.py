@@ -52,7 +52,7 @@ def plotGraphs(mList, names, n):
 	count = 0
 	fig, axes = plt.subplots(nrows=n, ncols=2)
 	
-	for k in range(0, num):
+	for k in range(0, n):
 		d = list(mList)[count] # get dictionary from list to map
 		x = x.append(list(d.keys()))
 		y = y.append(list(d.values()))
