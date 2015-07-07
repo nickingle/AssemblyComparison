@@ -33,7 +33,7 @@ def createDicts(sfile):
 	
 	return mm_d, cs_d
 	
-def CountDup(samfile):
+def DupCount(samfile):
 	dupCount = 0
 	
 	for readseg in samfile.fetch():
