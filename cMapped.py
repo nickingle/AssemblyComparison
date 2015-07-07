@@ -48,9 +48,9 @@ def plotGraphs(mList, names, n):
 	x = []
 	y = []
 	axlist = list(names)
-	#num = int(n/2)
+	#000num = int(n/2)
 	count = 0
-	fig, axes = plt.subplots(nrows=num, ncols=2)
+	fig, axes = plt.subplots(nrows=n, ncols=2)
 	
 	for k in range(0, num):
 		d = list(mList)[count] # get dictionary from list to map
