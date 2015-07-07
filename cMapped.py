@@ -48,7 +48,7 @@ def plotGraphs(mList, names, n):
 	x = []
 	y = []
 	axlist = list(names)
-	num = int(n/2)
+	#num = int(n/2)
 	count = 0
 	fig, axes = plt.subplots(nrows=num, ncols=2)
 	
