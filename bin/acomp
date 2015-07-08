@@ -37,7 +37,7 @@ do
 		in
 		k) KMER=${OPTARG};; # user inputted change in kmer size used in minia assemler
 		c) SKIP=${OPTARG};;
-		r) REF=1;;
+		r) REF=${OPTARG};;
 		?/ ) echo "ERROR: Unknown Option" exit 1;;
 	esac
 done
@@ -221,8 +221,10 @@ if (( "$REF" == 1 )); then
 			echo ======= Graphs were saved to Contigs_Mapped.png =====
 			echo
 		fi
-	fi
-	
+	done
+fi
+
+fi	
 	
 			
 echo ==== DONE ====
