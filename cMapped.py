@@ -54,9 +54,10 @@ def plotGraphs(mList, names, n):
 	
 	for k in range(0, num):
 		d = list(mList)[count] # get dictionary from list to map
-		x = x.append(list(d.keys()))
-		y = y.append(list(d.values()))
+		x = list(d.keys())
+		y = list(d.values())
 		
+		print("{0} = k".format(k))
 		axes[k,0].plot(x, y, '.')
 		gName = list(names)[k]
 		title = '{0} : Minia Contigs mapped to Velvet'.format(gName)
