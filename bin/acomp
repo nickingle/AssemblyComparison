@@ -171,9 +171,9 @@ echo
 			# echo === ${NAME} ::: Running Minia vs Velvet Comparison  ====
 			
 			MAIN_INPUT+=" "
-			MAIN_INPUT+=$( echo "${NAME}_miniaToVelvet.sam" )
+			MAIN_INPUT+=$( echo "${SAMFOLDER}"/"${NAME}_miniaToVelvet.sam" )
 			MAIN_INPUT+=" "
-			MAIN_INPUT+=$( echo "${NAME}_velvetToMinia.sam" )
+			MAIN_INPUT+=$( echo "${SAMFOLDER}"/"${NAME}_velvetToMinia.sam" )
 			MAIN_INPUT+=" "
 			MAIN_INPUT+=$( echo "${NAME}" )
 		done
@@ -204,9 +204,9 @@ echo
 			NAME=$( echo $(basename "${FILE}" ".${FORMAT}") ) # file name w/o extension
 	
 			MAIN_INPUT+=" "
-			MAIN_INPUT+=$( echo "${SAMFOLDER}"/"${NAME}_ReftoMinia.sam" )
+			MAIN_INPUT+=$( echo "${NAME}_ReftoMinia.sam" )
 			MAIN_INPUT+=" "
-			MAIN_INPUT+=$( echo "${SAMFOLDER}"/"${NAME}_ReftoVelvet.sam ")
+			MAIN_INPUT+=$( echo "${NAME}_ReftoVelvet.sam ")
 			MAIN_INPUT+=" "
 			MAIN_INPUT+=$( echo "${NAME}" )
 	
@@ -226,7 +226,7 @@ echo
 				echo
 			fi
 		done
-	fi
+fi
 
 fi	
 	
