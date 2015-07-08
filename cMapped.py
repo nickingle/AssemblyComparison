@@ -44,38 +44,33 @@ def createDict(sfile):
 	#print('Contig Count: {0}'.format(str(contigCount)))
 	return LengthDict
 
-def plotGraphs(mList, names, n):
+def plotGraphs(mList, names):
 	x = []
 	y = []
 	axlist = list(names)
-	num = int(n/2)
-	count = 0
-	fig, axes = plt.subplots(nrows=num, ncols=2)
+	fig, (ax0, ax1) = plt.subplots(ncols=2)
 	
-	for k in range(0, num):
-		d = list(mList)[count] # get dictionary from list to map
-		x = list(d.keys())
-		y = list(d.values())
+	d = list(mList)[0] # get dictionary from list to map
+	x = list(d.keys())
+	y = list(d.values())
 		
-		print("{0} = k".format(k))
-		axes[k,0].plot(x, y, '.')
-		gName = list(names)[k]
-		title = '{0} : Minia Contigs mapped to Velvet'.format(gName)
-		axes[k,0].set_title(title, fontsize=10)
-		axes[k,0].set_ylabel('# of Minia Contigs Mapped to Reference Seq', fontsize=7)
-		axes[k,0].set_xlabel('Length of Velvet Sequence', fontsize=10)
+	ax0.plot(x, y, '.')
+	gName = list(names)[k]
+	title = '{0} : Minia Contigs mapped to Velvet'.format(gName)
+	ax0.set_title(title, fontsize=10)
+	ax0.set_ylabel('# of Minia Contigs Mapped to Reference Seq', fontsize=7)
+	ax0.set_xlabel('Length of Velvet Sequence', fontsize=10)
 		
-		x = []
-		y = []
-		d = list(mList)[count+1]
-		x = x.append(list(d.keys()))
-		y = y.append(list(d.values()))
-		axes[k,1].plot(x, y, '.')
-		title = '{0} : Velvet Contigs mapped to Minia Sequences'.format(gName)
-		axes[k,1].set_title(title, fontsize=10)
-		axes[k,1].set_ylabel('# of Velvet Contigs Mapped to Reference Seq', fontsize=7)
-		axes[k,1].set_xlabel('Length of Minia Sequence', fontsize=10)
-		count = count + 2
+	x = []
+	y = []
+	d = list(mList)[1]
+	x = list(d.keys())
+	y = list(d.values())
+	ax1.plot(x, y, '.')
+	title = '{0} : Velvet Contigs mapped to Minia Sequences'.format(gName)
+	ax1.set_title(title, fontsize=10)
+	ax1.set_ylabel('# of Velvet Contigs Mapped to Reference Seq', fontsize=7)
+	ax1.set_xlabel('Length of Minia Sequence', fontsize=10)
 		
 	fig.subplots_adjust(top=2)
 	plt.tight_layout()
@@ -110,7 +105,7 @@ if __name__ == "__main__":
 	numOfFilesI = int(numOfFiles)
 	size = len(cmList)
 	print("{0} items in the list".format(size))		
-	plotGraphs(cmList, names, numOfFiles)
+	plotGraphs(cmList, names)
 
 
 	
