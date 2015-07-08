@@ -136,15 +136,18 @@ if (( "$REF" == 1 )); then
 	for FILE in "${REFFILES[@]}"; do
 		FNAME=$( echo $(basename "${FILE}") ) # file name including extension
 		NAME=$( echo $(basename "${FILE}" ".${FORMAT}") ) # file name w/o extension
-		MINIAFILE=$( echo "${NAME}".contigs.fa ) # $FILEs minia ouput for bowtie2
+		MINIAFILE=$( echo "Oryza_SimSeq_miniaContigs.contigs.fa" ) # $FILEs minia ouput for bowtie2
+		VELVETCONTIGS=$( echo "${VELVETFOLDER}"/"Oryza_SimSeq"/"contigs.fa" )
+		MINIACONTIGS=$( echo "${MINIAFOLDER}"/"Oryza_SimSeq.contigs.fa" )
+		
 		REFBUILD=$( echo "${NAME}_Ref" )
 		REFTOVEL=$( echo "${NAME}_ReftoVelvet.sam" )
 		REFTOMIN=$( echo "${NAME}_ReftoMinia.sam" )
 		
-		bowtie2-build -f $( echo "${REF_FOLDER}"/Oryza_Ref_Chro3.fasta ) $( echo "${BOWTIEFOLDER}"/${REFBUILD} )
+		 #bowtie2-build -f $( echo "${REF_FOLDER}"/Oryza_Ref_Chro3.fasta ) $( echo "${BOWTIEFOLDER}"/${REFBUILD} )
 		
-		bowtie2 -p "${PROCESSORS}" -x $( echo "${BOWTIEFOLDER}"/${REFBUILD} ) -f -U $( echo "${MINIAFOLDER}"/"${MINIAFILE}" ) -S ${REFTOMIN}
-		bowtie2 -p "${PROCESSORS}" -x $( echo "${BOWTIEFOLDER}"/${REFBUILD} ) -f -U $( echo "${VELVETF}"/contigs.fa ) -S ${REFTOVEL}
+		bowtie2 -p "${PROCESSORS}" -x $( echo "${BOWTIEFOLDER}"/${REFBUILD} ) -f -U $( echo "${MINIACONTIGS}" ) -S ${REFTOMIN}
+		bowtie2 -p "${PROCESSORS}" -x $( echo "${BOWTIEFOLDER}"/${REFBUILD} ) -f -U $( echo "${VELVETCONTIGS}" ) -S ${REFTOVEL}
 	done
 fi	
 		
