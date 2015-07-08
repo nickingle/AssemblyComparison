@@ -37,6 +37,8 @@ def createDict(sfile):
 		if lengthRef in LengthDict:
 			count = LengthDict[lengthRef]
 			LengthDict[lengthRef] = count + 1
+			if count > 5000:
+				print("Reference Sequence: {0}".format(refname))
 		else:
 			count = 1
 			LengthDict[lengthRef] = count
