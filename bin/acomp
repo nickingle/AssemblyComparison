@@ -15,6 +15,7 @@ MINREAD=3
 PROCESSORS=1
 FORMAT=fasta # acomp was designed to run with fasta files:: it may give error if .fa is used instead
 MAINFOLDER=.
+REF=0
 COUNT=0
 
 #Default locations
@@ -27,14 +28,16 @@ MINIAFOLDER=$( echo "${MAINFOLDER}"/miniaOutput ) # Folder specifically for mini
 BOWTIEFOLDER=$( echo "${MAINFOLDER}"/bowtieOutput ) # Folder specifically for bowtie-build outputs
 SAMFOLDER=$( echo "${MAINFOLDER}"/samFiles ) # Folder specifically for bowtie sam file outputs 
 VELVETFOLDER=$( echo "${MAINFOLDER}"/velvetoutput ) # Folder specifically for velvet outputs
+REF_FOLDER=$( echo "${MAINFOLDER}"/refSeqs ) # Folder specifically for reference genome before simulation
 
 
-while getopts "k:c:" option
+while getopts "k:c:r:" option
 do
 	case "${option}"
 		in
 		k) KMER=${OPTARG};; # user inputted change in kmer size used in minia assemler
 		c) SKIP=${OPTARG};;
+		r) REF=1;;
 		?/ ) echo "ERROR: Unknown Option" exit 1;;
 	esac
 done
@@ -129,6 +132,24 @@ if (( "$SKIP" == "0" )) || (( "$SKIP" == "3" )); then
 		echo ==== Finished aligning ${COUNT} sets of files using bowtie ====
 fi
 
+if (( "$REF" == 1 )); then
+	for FILE in "${REFFILES[@]}"; do
+		FNAME=$( echo $(basename "${FILE}") ) # file name including extension
+		NAME=$( echo $(basename "${FILE}" ".${FORMAT}") ) # file name w/o extension
+		MINIAFILE=$( echo "${NAME}".contigs.fa ) # $FILEs minia ouput for bowtie2
+		REFBUILD=$( echo "${NAME}_Ref" )
+		REFTOVEL=$( echo "${NAME}_ReftoVelvet.sam" )
+		REFTOMIN=$( echo "${NAME}_ReftoMinia.sam" )
+		
+		bowtie2-build -f $( echo "${REF_FOLDER}"/Oryza_Ref_Chro3.fasta ) $( echo "${BOWTIEFOLDER}"/${REFBUILD} )
+		
+		bowtie2 -p "${PROCESSORS}" -x $( echo "${BOWTIEFOLDER}"/${REFBUILD} ) -f -U $( echo "${MINIAFOLDER}"/"${MINIAFILE}" ) -S ${REFTOMIN}
+		bowtie2 -p "${PROCESSORS}" -x $( echo "${BOWTIEFOLDER}"/${REFBUILD} ) -f -U $( echo "${VELVETF}"/contigs.fa ) -S ${REFTOVEL}
+	done
+fi	
+		
+		
+
 if (( "$SKIP" == "0" )) || (( "$SKIP" == "4" )) || (( "$SKIP" == "5" )); then
 # Run main.py on bowtie samfile outputs
 echo
@@ -139,7 +160,8 @@ echo
 # MAIN_INPUT=$( echo $COUNT ) 
 MAIN_INPUT=1 # for testing purposes only
 
-for FILE in "${REFFILES[@]}"; do
+if (( "$REF" == 0 )); then
+	for FILE in "${REFFILES[@]}"; do
 			FNAME=$( echo $(basename "${FILE}") ) # file name including extension
 			NAME=$( echo $(basename "${FILE}" ".${FORMAT}") ) # file name w/o extension
 			
@@ -153,25 +175,56 @@ for FILE in "${REFFILES[@]}"; do
 			MAIN_INPUT+=$( echo "${NAME}" )
 		done
 
-	echo "${MAIN_INPUT}" # testing purpose 
-	if (( "$SKIP" == "0" )) || (( "$SKIP" == "4" )); then
-		python $( echo ${DIR}/main.py ) $( echo "${MAIN_INPUT}" ) # Run main.py on MAIN_INPUT
-		echo ==== Finished running main.py ===========
-		echo ==== Graphs were saved to Percent_Match.png ======
-		echo
+		echo "${MAIN_INPUT}" # testing purpose 
+		if (( "$SKIP" == "0" )) || (( "$SKIP" == "4" )); then
+			python $( echo ${DIR}/main.py ) $( echo "${MAIN_INPUT}" ) # Run main.py on MAIN_INPUT
+			echo ==== Finished running main.py ===========
+			echo ==== Graphs were saved to Percent_Match.png ======
+			echo
+		fi
+	
+		if (( "$SKIP" == "0" )) || (( "$SKIP" == "5" )); then
+			python $( echo ${DIR}/cMapped.py ) $( echo "${MAIN_INPUT}" ) # Run cMapped.py on MAIN_INPUT
+			
+				#Run main.py and read in sam file output of bowtie
+				# python ${DIR}/main.py $( echo "${SAMFOLDER}"/"${NAME}_miniaToVelvet.sam" ) 
+				# python ${DIR}/main.py $( echo "${SAMFOLDER}"/"${NAME}_velvetToMinia.sam" )
+				echo ======= Finished running cMapped.py ======
+				echo ======= Graphs were saved to Contigs_Mapped.png =====
+				echo
+			fi
+		fi
+fi
+
+if (( "$REF" == 1 )); then
+	for FILE in "${REFFILES[@]}"; do
+		FNAME=$( echo $(basename "${FILE}") ) # file name including extension
+		NAME=$( echo $(basename "${FILE}" ".${FORMAT}") ) # file name w/o extension
+	
+		MAIN_INPUT+=" "
+		MAIN_INPUT+=$( echo "${SAMFOLDER}"/"${NAME}_ReftoMinia.sam" )
+		MAIN_INPUT+=$( echo "${SAMFOLDER}"/"${NAME}_ReftoVelvet.sam ")
+		MAIN_INPUT+=$( echo "${NAME}" )
+	
+		if (( "$SKIP" == "0" )) || (( "$SKIP" == "4" )); then
+			python $( echo ${DIR}/main.py ) $( echo "${MAIN_INPUT}" ) # Run main.py on MAIN_INPUT
+			echo ==== Finished running main.py ===========
+			echo ==== Graphs were saved to Percent_Match.png ======
+			echo
+		fi
+
+		if (( "$SKIP" == "0" )) || (( "$SKIP" == "5" )); then
+			python $( echo ${DIR}/cMapped.py ) $( echo "${MAIN_INPUT}" ) # Run cMapped.py on MAIN_INPUT
+		
+
+			echo ======= Finished running cMapped.py ======
+			echo ======= Graphs were saved to Contigs_Mapped.png =====
+			echo
+		fi
 	fi
 	
-	if (( "$SKIP" == "0" )) || (( "$SKIP" == "5" )); then
-		python $( echo ${DIR}/cMapped.py ) $( echo "${MAIN_INPUT}" ) # Run cMapped.py on MAIN_INPUT
+	
 			
-			#Run main.py and read in sam file output of bowtie
-			# python ${DIR}/main.py $( echo "${SAMFOLDER}"/"${NAME}_miniaToVelvet.sam" ) 
-			# python ${DIR}/main.py $( echo "${SAMFOLDER}"/"${NAME}_velvetToMinia.sam" )
-		echo ======= Finished running cMapped.py ======
-		echo ======= Graphs were saved to Contigs_Mapped.png =====
-		echo
-	fi
-fi			
 echo ==== DONE ====
 
 
