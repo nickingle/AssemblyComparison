@@ -160,11 +160,11 @@ echo
 echo ==== Running Graph Comparison on SamFiles ====
 echo
 
-# MAIN_INPUT=$( echo $COUNT ) 
-MAIN_INPUT=1 # for testing purposes only
+	# MAIN_INPUT=$( echo $COUNT ) 
+	MAIN_INPUT=1 # for testing purposes only
 
-if (( "$REF" == 0 )); then
-	for FILE in "${REFFILES[@]}"; do
+	if (( "$REF" == 0 )); then
+		for FILE in "${REFFILES[@]}"; do
 			FNAME=$( echo $(basename "${FILE}") ) # file name including extension
 			NAME=$( echo $(basename "${FILE}" ".${FORMAT}") ) # file name w/o extension
 			
@@ -195,37 +195,38 @@ if (( "$REF" == 0 )); then
 				echo ======= Finished running cMapped.py ======
 				echo ======= Graphs were saved to Contigs_Mapped.png =====
 				echo
+		fi
+	fi
+
+	if (( "$REF" == 1 )); then
+		for FILE in "${REFFILES[@]}"; do
+			FNAME=$( echo $(basename "${FILE}") ) # file name including extension
+			NAME=$( echo $(basename "${FILE}" ".${FORMAT}") ) # file name w/o extension
+	
+			MAIN_INPUT+=" "
+			MAIN_INPUT+=$( echo "${SAMFOLDER}"/"${NAME}_ReftoMinia.sam" )
+			MAIN_INPUT+=" "
+			MAIN_INPUT+=$( echo "${SAMFOLDER}"/"${NAME}_ReftoVelvet.sam ")
+			MAIN_INPUT+=" "
+			MAIN_INPUT+=$( echo "${NAME}" )
+	
+			if (( "$SKIP" == "0" )) || (( "$SKIP" == "4" )); then
+				python $( echo ${DIR}/main.py ) $( echo "${MAIN_INPUT}" ) # Run main.py on MAIN_INPUT
+				echo ==== Finished running main.py ===========
+				echo ==== Graphs were saved to Percent_Match.png ======
+				echo
 			fi
-		fi
-fi
 
-if (( "$REF" == 1 )); then
-	for FILE in "${REFFILES[@]}"; do
-		FNAME=$( echo $(basename "${FILE}") ) # file name including extension
-		NAME=$( echo $(basename "${FILE}" ".${FORMAT}") ) # file name w/o extension
-	
-		MAIN_INPUT+=" "
-		MAIN_INPUT+=$( echo "${SAMFOLDER}"/"${NAME}_ReftoMinia.sam" )
-		MAIN_INPUT+=$( echo "${SAMFOLDER}"/"${NAME}_ReftoVelvet.sam ")
-		MAIN_INPUT+=$( echo "${NAME}" )
-	
-		if (( "$SKIP" == "0" )) || (( "$SKIP" == "4" )); then
-			python $( echo ${DIR}/main.py ) $( echo "${MAIN_INPUT}" ) # Run main.py on MAIN_INPUT
-			echo ==== Finished running main.py ===========
-			echo ==== Graphs were saved to Percent_Match.png ======
-			echo
-		fi
-
-		if (( "$SKIP" == "0" )) || (( "$SKIP" == "5" )); then
-			python $( echo ${DIR}/cMapped.py ) $( echo "${MAIN_INPUT}" ) # Run cMapped.py on MAIN_INPUT
+			if (( "$SKIP" == "0" )) || (( "$SKIP" == "5" )); then
+				python $( echo ${DIR}/cMapped.py ) $( echo "${MAIN_INPUT}" ) # Run cMapped.py on MAIN_INPUT
 		
 
-			echo ======= Finished running cMapped.py ======
-			echo ======= Graphs were saved to Contigs_Mapped.png =====
-			echo
-		fi
-	done
-fi
+				echo ======= Finished running cMapped.py ======
+				echo ======= Graphs were saved to Contigs_Mapped.png =====
+				echo
+			fi
+		done
+	fi
 
 fi	
 	
